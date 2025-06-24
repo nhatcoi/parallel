@@ -1,0 +1,1 @@
+clang  -Xpreprocessor -fopenmp -I/opt/homebrew/opt/libomp/include -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names  -L/opt/homebrew/opt/libomp/lib -lomp CMakeFiles/prl_benchmark.dir/benchmark.c.o CMakeFiles/prl_benchmark.dir/sort_lib.c.o -o prl_benchmark  /opt/homebrew/opt/libomp/lib/libomp.dylib
