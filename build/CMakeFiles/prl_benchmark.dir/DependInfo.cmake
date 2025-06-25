@@ -8,8 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/coinhat/Documents/PROJECT/prl/prl/benchmark.c" "CMakeFiles/prl_benchmark.dir/benchmark.c.o" "gcc" "CMakeFiles/prl_benchmark.dir/benchmark.c.o.d"
-  "/Users/coinhat/Documents/PROJECT/prl/prl/sort_lib.c" "CMakeFiles/prl_benchmark.dir/sort_lib.c.o" "gcc" "CMakeFiles/prl_benchmark.dir/sort_lib.c.o.d"
+  "/Users/coinhat/Documents/PROJECT/prl/prl/src/benchmark.c" "CMakeFiles/prl_benchmark.dir/src/benchmark.c.o" "gcc" "CMakeFiles/prl_benchmark.dir/src/benchmark.c.o.d"
+  "/Users/coinhat/Documents/PROJECT/prl/prl/src/sort_lib.c" "CMakeFiles/prl_benchmark.dir/src/sort_lib.c.o" "gcc" "CMakeFiles/prl_benchmark.dir/src/sort_lib.c.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

@@ -72,52 +72,52 @@ include CMakeFiles/prl_benchmark.dir/flags.make
 CMakeFiles/prl_benchmark.dir/codegen:
 .PHONY : CMakeFiles/prl_benchmark.dir/codegen
 
-CMakeFiles/prl_benchmark.dir/benchmark.c.o: CMakeFiles/prl_benchmark.dir/flags.make
-CMakeFiles/prl_benchmark.dir/benchmark.c.o: /Users/coinhat/Documents/PROJECT/prl/prl/benchmark.c
-CMakeFiles/prl_benchmark.dir/benchmark.c.o: CMakeFiles/prl_benchmark.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/coinhat/Documents/PROJECT/prl/prl/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/prl_benchmark.dir/benchmark.c.o"
-	clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/prl_benchmark.dir/benchmark.c.o -MF CMakeFiles/prl_benchmark.dir/benchmark.c.o.d -o CMakeFiles/prl_benchmark.dir/benchmark.c.o -c /Users/coinhat/Documents/PROJECT/prl/prl/benchmark.c
+CMakeFiles/prl_benchmark.dir/src/benchmark.c.o: CMakeFiles/prl_benchmark.dir/flags.make
+CMakeFiles/prl_benchmark.dir/src/benchmark.c.o: /Users/coinhat/Documents/PROJECT/prl/prl/src/benchmark.c
+CMakeFiles/prl_benchmark.dir/src/benchmark.c.o: CMakeFiles/prl_benchmark.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/coinhat/Documents/PROJECT/prl/prl/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/prl_benchmark.dir/src/benchmark.c.o"
+	clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/prl_benchmark.dir/src/benchmark.c.o -MF CMakeFiles/prl_benchmark.dir/src/benchmark.c.o.d -o CMakeFiles/prl_benchmark.dir/src/benchmark.c.o -c /Users/coinhat/Documents/PROJECT/prl/prl/src/benchmark.c
 
-CMakeFiles/prl_benchmark.dir/benchmark.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/prl_benchmark.dir/benchmark.c.i"
-	clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/coinhat/Documents/PROJECT/prl/prl/benchmark.c > CMakeFiles/prl_benchmark.dir/benchmark.c.i
+CMakeFiles/prl_benchmark.dir/src/benchmark.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/prl_benchmark.dir/src/benchmark.c.i"
+	clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/coinhat/Documents/PROJECT/prl/prl/src/benchmark.c > CMakeFiles/prl_benchmark.dir/src/benchmark.c.i
 
-CMakeFiles/prl_benchmark.dir/benchmark.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/prl_benchmark.dir/benchmark.c.s"
-	clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/coinhat/Documents/PROJECT/prl/prl/benchmark.c -o CMakeFiles/prl_benchmark.dir/benchmark.c.s
+CMakeFiles/prl_benchmark.dir/src/benchmark.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/prl_benchmark.dir/src/benchmark.c.s"
+	clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/coinhat/Documents/PROJECT/prl/prl/src/benchmark.c -o CMakeFiles/prl_benchmark.dir/src/benchmark.c.s
 
-CMakeFiles/prl_benchmark.dir/sort_lib.c.o: CMakeFiles/prl_benchmark.dir/flags.make
-CMakeFiles/prl_benchmark.dir/sort_lib.c.o: /Users/coinhat/Documents/PROJECT/prl/prl/sort_lib.c
-CMakeFiles/prl_benchmark.dir/sort_lib.c.o: CMakeFiles/prl_benchmark.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/coinhat/Documents/PROJECT/prl/prl/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/prl_benchmark.dir/sort_lib.c.o"
-	clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/prl_benchmark.dir/sort_lib.c.o -MF CMakeFiles/prl_benchmark.dir/sort_lib.c.o.d -o CMakeFiles/prl_benchmark.dir/sort_lib.c.o -c /Users/coinhat/Documents/PROJECT/prl/prl/sort_lib.c
+CMakeFiles/prl_benchmark.dir/src/sort_lib.c.o: CMakeFiles/prl_benchmark.dir/flags.make
+CMakeFiles/prl_benchmark.dir/src/sort_lib.c.o: /Users/coinhat/Documents/PROJECT/prl/prl/src/sort_lib.c
+CMakeFiles/prl_benchmark.dir/src/sort_lib.c.o: CMakeFiles/prl_benchmark.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/coinhat/Documents/PROJECT/prl/prl/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/prl_benchmark.dir/src/sort_lib.c.o"
+	clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/prl_benchmark.dir/src/sort_lib.c.o -MF CMakeFiles/prl_benchmark.dir/src/sort_lib.c.o.d -o CMakeFiles/prl_benchmark.dir/src/sort_lib.c.o -c /Users/coinhat/Documents/PROJECT/prl/prl/src/sort_lib.c
 
-CMakeFiles/prl_benchmark.dir/sort_lib.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/prl_benchmark.dir/sort_lib.c.i"
-	clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/coinhat/Documents/PROJECT/prl/prl/sort_lib.c > CMakeFiles/prl_benchmark.dir/sort_lib.c.i
+CMakeFiles/prl_benchmark.dir/src/sort_lib.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/prl_benchmark.dir/src/sort_lib.c.i"
+	clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/coinhat/Documents/PROJECT/prl/prl/src/sort_lib.c > CMakeFiles/prl_benchmark.dir/src/sort_lib.c.i
 
-CMakeFiles/prl_benchmark.dir/sort_lib.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/prl_benchmark.dir/sort_lib.c.s"
-	clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/coinhat/Documents/PROJECT/prl/prl/sort_lib.c -o CMakeFiles/prl_benchmark.dir/sort_lib.c.s
+CMakeFiles/prl_benchmark.dir/src/sort_lib.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/prl_benchmark.dir/src/sort_lib.c.s"
+	clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/coinhat/Documents/PROJECT/prl/prl/src/sort_lib.c -o CMakeFiles/prl_benchmark.dir/src/sort_lib.c.s
 
 # Object files for target prl_benchmark
 prl_benchmark_OBJECTS = \
-"CMakeFiles/prl_benchmark.dir/benchmark.c.o" \
-"CMakeFiles/prl_benchmark.dir/sort_lib.c.o"
+"CMakeFiles/prl_benchmark.dir/src/benchmark.c.o" \
+"CMakeFiles/prl_benchmark.dir/src/sort_lib.c.o"
 
 # External object files for target prl_benchmark
 prl_benchmark_EXTERNAL_OBJECTS =
 
-prl_benchmark: CMakeFiles/prl_benchmark.dir/benchmark.c.o
-prl_benchmark: CMakeFiles/prl_benchmark.dir/sort_lib.c.o
-prl_benchmark: CMakeFiles/prl_benchmark.dir/build.make
-prl_benchmark: /opt/homebrew/opt/libomp/lib/libomp.dylib
-prl_benchmark: CMakeFiles/prl_benchmark.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/coinhat/Documents/PROJECT/prl/prl/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable prl_benchmark"
+bin/prl_benchmark: CMakeFiles/prl_benchmark.dir/src/benchmark.c.o
+bin/prl_benchmark: CMakeFiles/prl_benchmark.dir/src/sort_lib.c.o
+bin/prl_benchmark: CMakeFiles/prl_benchmark.dir/build.make
+bin/prl_benchmark: /opt/homebrew/opt/libomp/lib/libomp.dylib
+bin/prl_benchmark: CMakeFiles/prl_benchmark.dir/link.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/coinhat/Documents/PROJECT/prl/prl/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable bin/prl_benchmark"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/prl_benchmark.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
-CMakeFiles/prl_benchmark.dir/build: prl_benchmark
+CMakeFiles/prl_benchmark.dir/build: bin/prl_benchmark
 .PHONY : CMakeFiles/prl_benchmark.dir/build
 
 CMakeFiles/prl_benchmark.dir/clean:

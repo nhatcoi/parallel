@@ -4,7 +4,7 @@
 # compile C with clang
 C_DEFINES = 
 
-C_INCLUDES = 
+C_INCLUDES = -I/Users/coinhat/Documents/PROJECT/prl/prl/include
 
 C_FLAGSarm64 =  -Xpreprocessor -fopenmp -I/opt/homebrew/opt/libomp/include -std=gnu11 -arch arm64
 

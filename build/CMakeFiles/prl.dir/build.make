@@ -72,52 +72,52 @@ include CMakeFiles/prl.dir/flags.make
 CMakeFiles/prl.dir/codegen:
 .PHONY : CMakeFiles/prl.dir/codegen
 
-CMakeFiles/prl.dir/main.c.o: CMakeFiles/prl.dir/flags.make
-CMakeFiles/prl.dir/main.c.o: /Users/coinhat/Documents/PROJECT/prl/prl/main.c
-CMakeFiles/prl.dir/main.c.o: CMakeFiles/prl.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/coinhat/Documents/PROJECT/prl/prl/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/prl.dir/main.c.o"
-	clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/prl.dir/main.c.o -MF CMakeFiles/prl.dir/main.c.o.d -o CMakeFiles/prl.dir/main.c.o -c /Users/coinhat/Documents/PROJECT/prl/prl/main.c
+CMakeFiles/prl.dir/src/main.c.o: CMakeFiles/prl.dir/flags.make
+CMakeFiles/prl.dir/src/main.c.o: /Users/coinhat/Documents/PROJECT/prl/prl/src/main.c
+CMakeFiles/prl.dir/src/main.c.o: CMakeFiles/prl.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/coinhat/Documents/PROJECT/prl/prl/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/prl.dir/src/main.c.o"
+	clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/prl.dir/src/main.c.o -MF CMakeFiles/prl.dir/src/main.c.o.d -o CMakeFiles/prl.dir/src/main.c.o -c /Users/coinhat/Documents/PROJECT/prl/prl/src/main.c
 
-CMakeFiles/prl.dir/main.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/prl.dir/main.c.i"
-	clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/coinhat/Documents/PROJECT/prl/prl/main.c > CMakeFiles/prl.dir/main.c.i
+CMakeFiles/prl.dir/src/main.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/prl.dir/src/main.c.i"
+	clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/coinhat/Documents/PROJECT/prl/prl/src/main.c > CMakeFiles/prl.dir/src/main.c.i
 
-CMakeFiles/prl.dir/main.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/prl.dir/main.c.s"
-	clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/coinhat/Documents/PROJECT/prl/prl/main.c -o CMakeFiles/prl.dir/main.c.s
+CMakeFiles/prl.dir/src/main.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/prl.dir/src/main.c.s"
+	clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/coinhat/Documents/PROJECT/prl/prl/src/main.c -o CMakeFiles/prl.dir/src/main.c.s
 
-CMakeFiles/prl.dir/sort_lib.c.o: CMakeFiles/prl.dir/flags.make
-CMakeFiles/prl.dir/sort_lib.c.o: /Users/coinhat/Documents/PROJECT/prl/prl/sort_lib.c
-CMakeFiles/prl.dir/sort_lib.c.o: CMakeFiles/prl.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/coinhat/Documents/PROJECT/prl/prl/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/prl.dir/sort_lib.c.o"
-	clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/prl.dir/sort_lib.c.o -MF CMakeFiles/prl.dir/sort_lib.c.o.d -o CMakeFiles/prl.dir/sort_lib.c.o -c /Users/coinhat/Documents/PROJECT/prl/prl/sort_lib.c
+CMakeFiles/prl.dir/src/sort_lib.c.o: CMakeFiles/prl.dir/flags.make
+CMakeFiles/prl.dir/src/sort_lib.c.o: /Users/coinhat/Documents/PROJECT/prl/prl/src/sort_lib.c
+CMakeFiles/prl.dir/src/sort_lib.c.o: CMakeFiles/prl.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/coinhat/Documents/PROJECT/prl/prl/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/prl.dir/src/sort_lib.c.o"
+	clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/prl.dir/src/sort_lib.c.o -MF CMakeFiles/prl.dir/src/sort_lib.c.o.d -o CMakeFiles/prl.dir/src/sort_lib.c.o -c /Users/coinhat/Documents/PROJECT/prl/prl/src/sort_lib.c
 
-CMakeFiles/prl.dir/sort_lib.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/prl.dir/sort_lib.c.i"
-	clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/coinhat/Documents/PROJECT/prl/prl/sort_lib.c > CMakeFiles/prl.dir/sort_lib.c.i
+CMakeFiles/prl.dir/src/sort_lib.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/prl.dir/src/sort_lib.c.i"
+	clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/coinhat/Documents/PROJECT/prl/prl/src/sort_lib.c > CMakeFiles/prl.dir/src/sort_lib.c.i
 
-CMakeFiles/prl.dir/sort_lib.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/prl.dir/sort_lib.c.s"
-	clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/coinhat/Documents/PROJECT/prl/prl/sort_lib.c -o CMakeFiles/prl.dir/sort_lib.c.s
+CMakeFiles/prl.dir/src/sort_lib.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/prl.dir/src/sort_lib.c.s"
+	clang $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/coinhat/Documents/PROJECT/prl/prl/src/sort_lib.c -o CMakeFiles/prl.dir/src/sort_lib.c.s
 
 # Object files for target prl
 prl_OBJECTS = \
-"CMakeFiles/prl.dir/main.c.o" \
-"CMakeFiles/prl.dir/sort_lib.c.o"
+"CMakeFiles/prl.dir/src/main.c.o" \
+"CMakeFiles/prl.dir/src/sort_lib.c.o"
 
 # External object files for target prl
 prl_EXTERNAL_OBJECTS =
 
-prl: CMakeFiles/prl.dir/main.c.o
-prl: CMakeFiles/prl.dir/sort_lib.c.o
-prl: CMakeFiles/prl.dir/build.make
-prl: /opt/homebrew/opt/libomp/lib/libomp.dylib
-prl: CMakeFiles/prl.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/coinhat/Documents/PROJECT/prl/prl/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable prl"
+bin/prl: CMakeFiles/prl.dir/src/main.c.o
+bin/prl: CMakeFiles/prl.dir/src/sort_lib.c.o
+bin/prl: CMakeFiles/prl.dir/build.make
+bin/prl: /opt/homebrew/opt/libomp/lib/libomp.dylib
+bin/prl: CMakeFiles/prl.dir/link.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/coinhat/Documents/PROJECT/prl/prl/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable bin/prl"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/prl.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
-CMakeFiles/prl.dir/build: prl
+CMakeFiles/prl.dir/build: bin/prl
 .PHONY : CMakeFiles/prl.dir/build
 
 CMakeFiles/prl.dir/clean:

@@ -149,80 +149,80 @@ prl_benchmark/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/prl_benchmark.dir/build.make CMakeFiles/prl_benchmark.dir/build
 .PHONY : prl_benchmark/fast
 
-benchmark.o: benchmark.c.o
-.PHONY : benchmark.o
+src/benchmark.o: src/benchmark.c.o
+.PHONY : src/benchmark.o
 
 # target to build an object file
-benchmark.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/prl_benchmark.dir/build.make CMakeFiles/prl_benchmark.dir/benchmark.c.o
-.PHONY : benchmark.c.o
+src/benchmark.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/prl_benchmark.dir/build.make CMakeFiles/prl_benchmark.dir/src/benchmark.c.o
+.PHONY : src/benchmark.c.o
 
-benchmark.i: benchmark.c.i
-.PHONY : benchmark.i
+src/benchmark.i: src/benchmark.c.i
+.PHONY : src/benchmark.i
 
 # target to preprocess a source file
-benchmark.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/prl_benchmark.dir/build.make CMakeFiles/prl_benchmark.dir/benchmark.c.i
-.PHONY : benchmark.c.i
+src/benchmark.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/prl_benchmark.dir/build.make CMakeFiles/prl_benchmark.dir/src/benchmark.c.i
+.PHONY : src/benchmark.c.i
 
-benchmark.s: benchmark.c.s
-.PHONY : benchmark.s
+src/benchmark.s: src/benchmark.c.s
+.PHONY : src/benchmark.s
 
 # target to generate assembly for a file
-benchmark.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/prl_benchmark.dir/build.make CMakeFiles/prl_benchmark.dir/benchmark.c.s
-.PHONY : benchmark.c.s
+src/benchmark.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/prl_benchmark.dir/build.make CMakeFiles/prl_benchmark.dir/src/benchmark.c.s
+.PHONY : src/benchmark.c.s
 
-main.o: main.c.o
-.PHONY : main.o
+src/main.o: src/main.c.o
+.PHONY : src/main.o
 
 # target to build an object file
-main.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/prl.dir/build.make CMakeFiles/prl.dir/main.c.o
-.PHONY : main.c.o
+src/main.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/prl.dir/build.make CMakeFiles/prl.dir/src/main.c.o
+.PHONY : src/main.c.o
 
-main.i: main.c.i
-.PHONY : main.i
+src/main.i: src/main.c.i
+.PHONY : src/main.i
 
 # target to preprocess a source file
-main.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/prl.dir/build.make CMakeFiles/prl.dir/main.c.i
-.PHONY : main.c.i
+src/main.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/prl.dir/build.make CMakeFiles/prl.dir/src/main.c.i
+.PHONY : src/main.c.i
 
-main.s: main.c.s
-.PHONY : main.s
+src/main.s: src/main.c.s
+.PHONY : src/main.s
 
 # target to generate assembly for a file
-main.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/prl.dir/build.make CMakeFiles/prl.dir/main.c.s
-.PHONY : main.c.s
+src/main.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/prl.dir/build.make CMakeFiles/prl.dir/src/main.c.s
+.PHONY : src/main.c.s
 
-sort_lib.o: sort_lib.c.o
-.PHONY : sort_lib.o
+src/sort_lib.o: src/sort_lib.c.o
+.PHONY : src/sort_lib.o
 
 # target to build an object file
-sort_lib.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/prl.dir/build.make CMakeFiles/prl.dir/sort_lib.c.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/prl_benchmark.dir/build.make CMakeFiles/prl_benchmark.dir/sort_lib.c.o
-.PHONY : sort_lib.c.o
+src/sort_lib.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/prl.dir/build.make CMakeFiles/prl.dir/src/sort_lib.c.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/prl_benchmark.dir/build.make CMakeFiles/prl_benchmark.dir/src/sort_lib.c.o
+.PHONY : src/sort_lib.c.o
 
-sort_lib.i: sort_lib.c.i
-.PHONY : sort_lib.i
+src/sort_lib.i: src/sort_lib.c.i
+.PHONY : src/sort_lib.i
 
 # target to preprocess a source file
-sort_lib.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/prl.dir/build.make CMakeFiles/prl.dir/sort_lib.c.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/prl_benchmark.dir/build.make CMakeFiles/prl_benchmark.dir/sort_lib.c.i
-.PHONY : sort_lib.c.i
+src/sort_lib.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/prl.dir/build.make CMakeFiles/prl.dir/src/sort_lib.c.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/prl_benchmark.dir/build.make CMakeFiles/prl_benchmark.dir/src/sort_lib.c.i
+.PHONY : src/sort_lib.c.i
 
-sort_lib.s: sort_lib.c.s
-.PHONY : sort_lib.s
+src/sort_lib.s: src/sort_lib.c.s
+.PHONY : src/sort_lib.s
 
 # target to generate assembly for a file
-sort_lib.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/prl.dir/build.make CMakeFiles/prl.dir/sort_lib.c.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/prl_benchmark.dir/build.make CMakeFiles/prl_benchmark.dir/sort_lib.c.s
-.PHONY : sort_lib.c.s
+src/sort_lib.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/prl.dir/build.make CMakeFiles/prl.dir/src/sort_lib.c.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/prl_benchmark.dir/build.make CMakeFiles/prl_benchmark.dir/src/sort_lib.c.s
+.PHONY : src/sort_lib.c.s
 
 # Help Target
 help:
@@ -235,15 +235,15 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... prl"
 	@echo "... prl_benchmark"
-	@echo "... benchmark.o"
-	@echo "... benchmark.i"
-	@echo "... benchmark.s"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
-	@echo "... sort_lib.o"
-	@echo "... sort_lib.i"
-	@echo "... sort_lib.s"
+	@echo "... src/benchmark.o"
+	@echo "... src/benchmark.i"
+	@echo "... src/benchmark.s"
+	@echo "... src/main.o"
+	@echo "... src/main.i"
+	@echo "... src/main.s"
+	@echo "... src/sort_lib.o"
+	@echo "... src/sort_lib.i"
+	@echo "... src/sort_lib.s"
 .PHONY : help
 
 
