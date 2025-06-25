@@ -26,12 +26,9 @@ show_menu() {
     echo "🎯 Available Options:"
     echo "===================="
     echo "1. 🔨 Build Project"
-    echo "2. 🧪 Run Tests & Benchmarks"
-    echo "3. 🧹 Clean Build"
-    echo "4. 🔄 Build + Test (Recommended)"
-    echo "5. 📊 Quick Demo Only"
-    echo "6. 🚀 Full Benchmark Only"
-    echo "7. ❌ Exit"
+    echo "2. 🧹 Clean Build"
+    echo "3. 🚀 Run Program"
+    echo "4. ❌ Exit"
     echo ""
 }
 
@@ -40,44 +37,37 @@ execute_choice() {
     case $1 in
         1)
             echo "🔨 Building project..."
-            ./scripts/build.sh
+            mkdir -p build
+            cd build
+            cmake .. && make
+            cd ..
             ;;
         2)
-            echo "🧪 Running tests and benchmarks..."
-            ./scripts/run_tests.sh
+            echo "🧹 Cleaning build..."
+            rm -rf build
+            echo "✅ Build directory cleaned!"
             ;;
         3)
-            echo "🧹 Cleaning build..."
-            ./scripts/clean.sh
-            ;;
-        4)
-            echo "🔄 Building and testing..."
-            ./scripts/build.sh && ./scripts/run_tests.sh
-            ;;
-        5)
-            echo "📊 Running quick demo..."
+            echo "🚀 Running program..."
             if [ ! -f "build/bin/prl" ]; then
                 echo "Building first..."
-                ./scripts/build.sh
+                mkdir -p build
+                cd build
+                cmake .. && make
+                cd ..
             fi
-            cd build && ./bin/prl
-            cd ..
-            ;;
-        6)
-            echo "🚀 Running full benchmark..."
-            if [ ! -f "build/bin/prl_benchmark" ]; then
-                echo "Building first..."
-                ./scripts/build.sh
+            if [ -f "build/bin/prl" ]; then
+                ./build/bin/prl
+            else
+                echo "❌ Build failed! Cannot run program."
             fi
-            cd build && ./bin/prl_benchmark
-            cd ..
             ;;
-        7)
+        4)
             echo "👋 Goodbye!"
             exit 0
             ;;
         *)
-            echo "❌ Invalid option. Please choose 1-7."
+            echo "❌ Invalid option. Please choose 1-4."
             ;;
     esac
 }
@@ -86,12 +76,12 @@ execute_choice() {
 while true; do
     echo ""
     show_menu
-    read -p "Choose an option (1-7): " choice
+    read -p "Choose an option (1-4): " choice
     echo ""
     
     execute_choice $choice
     
-    if [ $choice -eq 7 ]; then
+    if [ $choice -eq 4 ]; then
         break
     fi
     

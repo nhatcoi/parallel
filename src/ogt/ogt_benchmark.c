@@ -1,20 +1,22 @@
+#include "../../include/sort_ogt.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 #include <omp.h>
-#include "../include/sort_lib.h"
 
 #define MAX_ARRAY_SIZE 100000
 #define MAX_VALUE 10000
 #define NUM_RUNS 5
 
-void printResults(const char* sort_type, int array_size, int threads, double avg_time, double speedup) {
+// Print benchmark results in formatted table
+void printBenchmarkResults(const char* sort_type, int array_size, int threads, double avg_time, double speedup) {
     printf("%-15s | %-10d | %-8d | %-12.6f | %-10.4f\n", 
            sort_type, array_size, threads, avg_time, speedup);
 }
 
-void runBenchmark(int array_size) {
+// Run benchmark for a single array size
+void runSingleBenchmark(int array_size) {
     printf("\n=== BENCHMARK RESULTS FOR ARRAY SIZE: %d ===\n", array_size);
     printf("%-15s | %-10s | %-8s | %-12s | %-10s\n", 
            "Sort Type", "Array Size", "Threads", "Avg Time (s)", "Speedup");
@@ -58,10 +60,10 @@ void runBenchmark(int array_size) {
         
         if (threads == 1) {
             sequential_time = avg_time;
-            printResults("Sequential", array_size, threads, avg_time, 1.0);
+            printBenchmarkResults("Sequential", array_size, threads, avg_time, 1.0);
         } else {
             double speedup = sequential_time / avg_time;
-            printResults("Parallel", array_size, threads, avg_time, speedup);
+            printBenchmarkResults("Parallel", array_size, threads, avg_time, speedup);
         }
     }
     
@@ -69,20 +71,22 @@ void runBenchmark(int array_size) {
     free(test_array);
 }
 
-void runDetailedAnalysis() {
-    printf("\n=== DETAILED PERFORMANCE ANALYSIS ===\n");
+// Run detailed analysis with multiple array sizes
+void runDetailedBenchmarkAnalysis(void) {
+    printf("\n" CYAN "=== DETAILED PERFORMANCE ANALYSIS ===" RESET "\n");
     printf("Testing with different array sizes and thread counts...\n");
     
     int test_sizes[] = {10000, 25000, 50000, 75000, 100000};
     int num_sizes = sizeof(test_sizes) / sizeof(test_sizes[0]);
     
     for (int i = 0; i < num_sizes; i++) {
-        runBenchmark(test_sizes[i]);
+        runSingleBenchmark(test_sizes[i]);
     }
 }
 
-void demonstrateCorrectness() {
-    printf("=== CORRECTNESS VERIFICATION ===\n");
+// Demonstrate sorting correctness
+void demonstrateSortingCorrectness(void) {
+    printf("\n" GREEN "=== CORRECTNESS VERIFICATION ===" RESET "\n");
     
     int test_array[] = {64, 34, 25, 12, 22, 11, 90, 88, 76, 50, 42};
     int n = sizeof(test_array) / sizeof(test_array[0]);
@@ -130,11 +134,14 @@ void demonstrateCorrectness() {
     free(sequential_test);
 }
 
-void printSystemInfo() {
-    printf("=== SYSTEM INFORMATION ===\n");
+// Print system information
+void printSystemInformation(void) {
+    printf("\n" YELLOW "=== SYSTEM INFORMATION ===" RESET "\n");
     printf("Maximum threads available: %d\n", omp_get_max_threads());
     printf("Number of processors: %d\n", omp_get_num_procs());
     printf("OpenMP version: %d\n", _OPENMP);
+    printf("Library version: %s\n", SORT_OGT_VERSION);
+    printf("Author: %s\n", SORT_OGT_AUTHOR);
     printf("Test configuration:\n");
     printf("- Array sizes: 10K, 25K, 50K, 75K, 100K elements\n");
     printf("- Thread counts: 1, 3, 5, 7, 9, 11\n");
@@ -143,20 +150,29 @@ void printSystemInfo() {
     printf("\n");
 }
 
-int main() {
-    printf("PARALLEL INSERTION SORT PERFORMANCE BENCHMARK\n");
-    printf("==============================================\n");
+// Complete benchmark suite (equivalent to old benchmark.c main())
+void runCompleteBenchmark(void) {
+    printf(MAGENTA "PARALLEL INSERTION SORT PERFORMANCE BENCHMARK\n");
+    printf("==============================================\n" RESET);
     
-    printSystemInfo();
-    demonstrateCorrectness();
-    runDetailedAnalysis();
+    printSystemInformation();
+    demonstrateSortingCorrectness();
+    runDetailedBenchmarkAnalysis();
     
-    printf("\n=== SUMMARY ===\n");
+    printf("\n" BLUE "=== SUMMARY ===" RESET "\n");
     printf("1. Sequential version provides baseline performance\n");
     printf("2. Parallel versions show speedup with optimal thread counts\n");
     printf("3. Performance varies with array size and thread count\n");
     printf("4. Best performance typically achieved with thread count close to CPU cores\n");
     printf("5. Overhead may reduce efficiency for small arrays or too many threads\n");
-    
-    return 0;
+}
+
+// Print library information
+void printLibraryInfo(void) {
+    printf("\n" MAGENTA "╔══════════════════════════════════════════════════════╗\n");
+    printf("║                   SORT OGT LIBRARY                   ║\n");
+    printf("║              Parallel Insertion Sort                 ║\n");
+    printf("║                   Version: %-8s                  ║\n", SORT_OGT_VERSION);
+    printf("║                   Author: %-9s                  ║\n", SORT_OGT_AUTHOR);
+    printf("╚══════════════════════════════════════════════════════╝" RESET "\n");
 } 

@@ -21,20 +21,23 @@ endif()
 # Set output directory
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-# Source files
-set(SORT_LIB_SOURCES src/sort_lib.c)
+# Source files from ogt library
+set(OGT_SOURCES 
+    src/ogt/sort_seq.c
+    src/ogt/sort_openmp.c
+    src/ogt/utils.c
+    src/ogt/ogt_ui.c
+    src/ogt/ogt_test.c
+    src/ogt/ogt_benchmark.c
+    src/ogt/ogt_demo.c
+)
 
 # Main executable
-add_executable(prl src/main.c ${SORT_LIB_SOURCES})
-
-# Performance benchmark executable
-add_executable(prl_benchmark src/benchmark.c ${SORT_LIB_SOURCES})
+add_executable(prl src/main.c ${OGT_SOURCES})
 
 # Link OpenMP libraries
 if(APPLE)
     target_link_libraries(prl /opt/homebrew/opt/libomp/lib/libomp.dylib)
-    target_link_libraries(prl_benchmark /opt/homebrew/opt/libomp/lib/libomp.dylib)
 else()
     target_link_libraries(prl OpenMP::OpenMP_C)
-    target_link_libraries(prl_benchmark OpenMP::OpenMP_C)
 endif()
