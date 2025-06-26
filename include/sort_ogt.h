@@ -5,6 +5,12 @@
 #include <stdlib.h>
 #include <time.h>
 #include <omp.h>
+#include <pthread.h>
+
+// Conditional MPI inclusion
+#ifdef HAVE_MPI
+#include <mpi.h>
+#endif
 
 // Library information
 #define SORT_OGT_VERSION "1.0.0"
@@ -24,8 +30,17 @@ void insertionSortAsc(int a[], int n);
 void insertionSortDesc(int a[], int n);
 
 // ========== PARALLEL SORTING FUNCTIONS ==========
+// OpenMP implementations
 void parallelInsertionSortAsc(int a[], int n, int num_threads);
 void parallelInsertionSortDesc(int a[], int n, int num_threads);
+
+// Pthreads implementations
+void parallelInsertionSortPthreadsAsc(int a[], int n, int num_threads);
+void parallelInsertionSortPthreadsDesc(int a[], int n, int num_threads);
+
+// MPI implementations (available always, but with stubs when MPI disabled)
+void parallelInsertionSortMPIAsc(int a[], int n);
+void parallelInsertionSortMPIDesc(int a[], int n);
 
 // ========== UTILITY FUNCTIONS ==========
 double getCurrentTime(void);
@@ -44,6 +59,22 @@ void printLibraryInfo(void);
 // ========== DEMO FUNCTIONS ==========
 void runBasicSortingDemo(void);
 void runQuickParallelDemo(void);
+
+// Pthreads demo functions
+void demonstratePthreadsSort(void);
+void benchmarkPthreadsSort(int array_size, int num_threads);
+
+// MPI demo functions (available always, but with stubs when MPI disabled)
+void demonstrateMPISort(void);
+void benchmarkMPISort(int array_size);
+void printMPISystemInfo(void);
+void runComprehensiveMPITest(void);
+
+// MPI utility functions
+int initializeMPI(int argc, char* argv[]);
+void finalizeMPI(void);
+void getMPIInfo(int* rank, int* size);
+int isMPIInitialized(void);
 
 // ========== TEST FUNCTIONS ==========
 void testSequentialUserInput(void);
