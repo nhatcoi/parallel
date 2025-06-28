@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "sort_ogt.h"
+#include "sort_ogt/include/sort_ogt.h"
 
 int main(int argc, char* argv[]) {
     // Initialize MPI if available and running with mpirun

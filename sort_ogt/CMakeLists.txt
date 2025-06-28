@@ -60,29 +60,26 @@ set(SORT_OGT_SOURCES
     src/ogt/ogt_ui.c
 )
 
-# Create the executable
-add_executable(sort_ogt 
-    src/main.c
-    ${SORT_OGT_SOURCES}
-)
+# Create the library
+add_library(sort_ogt STATIC ${SORT_OGT_SOURCES})
 
 # Include directory
-target_include_directories(sort_ogt PRIVATE include)
+target_include_directories(sort_ogt PUBLIC include)
 
 # Link OpenMP if available
 if(OpenMP_FOUND)
-    target_link_libraries(sort_ogt OpenMP::OpenMP_C)
+    target_link_libraries(sort_ogt PUBLIC OpenMP::OpenMP_C)
 else()
     message(WARNING "Building without OpenMP - parallel features will be disabled")
 endif()
 
 # Link Threads library for Pthreads
-target_link_libraries(sort_ogt Threads::Threads)
+target_link_libraries(sort_ogt PUBLIC Threads::Threads)
 
 # Link MPI if available
 if(MPI_FOUND)
-    target_link_libraries(sort_ogt MPI::MPI_C)
-    target_compile_definitions(sort_ogt PRIVATE HAVE_MPI)
+    target_link_libraries(sort_ogt PUBLIC MPI::MPI_C)
+    target_compile_definitions(sort_ogt PUBLIC HAVE_MPI)
 endif()
 
 # Print configuration info
@@ -101,5 +98,5 @@ else()
 endif()
 
 # Installation
-install(TARGETS sort_ogt DESTINATION bin)
+install(TARGETS sort_ogt DESTINATION lib)
 install(FILES include/sort_ogt.h DESTINATION include)
