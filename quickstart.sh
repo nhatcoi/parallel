@@ -49,15 +49,15 @@ execute_choice() {
             ;;
         3)
             echo "🚀 Running program..."
-            if [ ! -f "build/bin/prl" ]; then
+            if [ ! -f "build/sort_ogt" ]; then
                 echo "Building first..."
                 mkdir -p build
                 cd build
                 cmake .. && make
                 cd ..
             fi
-            if [ -f "build/bin/prl" ]; then
-                ./build/bin/prl
+            if [ -f "build/sort_ogt" ]; then
+                ./build/sort_ogt
             else
                 echo "❌ Build failed! Cannot run program."
             fi
