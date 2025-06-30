@@ -15,20 +15,23 @@ chmod +x scripts/*.sh
 echo "✅ Project structure organized!"
 echo ""
 echo "📁 Current structure:"
-echo "├── src/           - Source code"
-echo "├── include/       - Headers"
-echo "├── scripts/       - Build & test scripts"
-echo "└── build/         - Build output"
+echo "├── prl/           - Library source code"
+echo "│   ├── src/       - Library implementation"
+echo "│   ├── include/   - Library headers"
+echo "│   └── build/     - Library build output"
+echo "├── main.c         - Main application"
+echo "└── build_main.sh  - Build script"
 echo ""
 
 # Function to show menu
 show_menu() {
     echo "🎯 Available Options:"
     echo "===================="
-    echo "1. 🔨 Build Project"
-    echo "2. 🧹 Clean Build"
-    echo "3. 🚀 Run Program"
-    echo "4. ❌ Exit"
+    echo "1. 🔨 Build Library Only"
+    echo "2. 🚀 Build Library + Main"
+    echo "3. 🧹 Clean Build"
+    echo "4. 🏃 Run Program"
+    echo "5. ❌ Exit"
     echo ""
 }
 
@@ -36,38 +39,47 @@ show_menu() {
 execute_choice() {
     case $1 in
         1)
-            echo "🔨 Building project..."
+            echo "🔨 Building library only..."
             mkdir -p build
             cd build
             cmake .. && make
             cd ..
+            echo "✅ Library built: build/libsort_ogt.a"
             ;;
         2)
-            echo "🧹 Cleaning build..."
-            rm -rf build
-            echo "✅ Build directory cleaned!"
+            echo "🚀 Building library + main application..."
+            cd ..
+            ./build_main.sh
+            cd prl
             ;;
         3)
-            echo "🚀 Running program..."
-            if [ ! -f "build/bin/prl" ]; then
+            echo "🧹 Cleaning build..."
+            rm -rf build
+            cd ..
+            rm -f main
+            cd prl
+            echo "✅ Build directories cleaned!"
+            ;;
+        4)
+            echo "🏃 Running program..."
+            cd ..
+            if [ ! -f "main" ]; then
                 echo "Building first..."
-                mkdir -p build
-                cd build
-                cmake .. && make
-                cd ..
+                ./build_main.sh
             fi
-            if [ -f "build/bin/prl" ]; then
-                ./build/bin/prl
+            if [ -f "main" ]; then
+                ./main
             else
                 echo "❌ Build failed! Cannot run program."
             fi
+            cd prl
             ;;
-        4)
+        5)
             echo "👋 Goodbye!"
             exit 0
             ;;
         *)
-            echo "❌ Invalid option. Please choose 1-4."
+            echo "❌ Invalid option. Please choose 1-5."
             ;;
     esac
 }
@@ -76,12 +88,12 @@ execute_choice() {
 while true; do
     echo ""
     show_menu
-    read -p "Choose an option (1-4): " choice
+    read -p "Choose an option (1-5): " choice
     echo ""
     
     execute_choice $choice
     
-    if [ $choice -eq 4 ]; then
+    if [ $choice -eq 5 ]; then
         break
     fi
     
