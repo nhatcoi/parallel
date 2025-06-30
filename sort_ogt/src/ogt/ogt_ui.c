@@ -68,35 +68,6 @@ void printBenchmarkResults(const char* sort_type, int array_size, int threads, d
            sort_type, array_size, threads, avg_time, speedup);
 }
 
-// Measure sequential baseline for speedup calculations
-double measureSequentialBaseline(int array_size, int num_runs) {
-    printf("📏 Measuring sequential baseline...\n");
-    
-    double total_time = 0.0;
-    
-    for (int run = 0; run < num_runs; run++) {
-        int *arr = malloc(array_size * sizeof(int));
-        if (!arr) {
-            printf(RED "❌ Memory allocation failed for sequential baseline\n" RESET);
-            return -1.0;
-        }
-        
-        generateRandomArray(arr, array_size, MAX_VALUE);
-        
-        double start_time = getCurrentTime();
-        insertionSortAsc(arr, array_size);
-        double end_time = getCurrentTime();
-        
-        total_time += (end_time - start_time);
-        free(arr);
-    }
-    
-    double avg_time = total_time / num_runs;
-    printf("✅ Sequential baseline: %.6f seconds (averaged over %d runs)\n", avg_time, num_runs);
-    
-    return avg_time;
-}
-
 // Print library information
 void printLibraryInfo(void) {
     printf("\n" MAGENTA "╔══════════════════════════════════════════════════════╗\n");
@@ -232,22 +203,12 @@ void runOpenMPBenchmark(void) {
     printf("Array size: %d elements\n", array_size);
     printf("Runs per configuration: %d\n\n", NUM_RUNS);
     
-    // Measure sequential baseline first
-    double sequential_time = measureSequentialBaseline(array_size, NUM_RUNS);
-    if (sequential_time < 0) {
-        printf(RED "❌ Failed to measure sequential baseline\n" RESET);
-        return;
-    }
-    
-    printf("\n%-8s | %-12s | %-10s | %-12s\n", "Threads", "Avg Time (s)", "Speedup", "Efficiency");
+    printf("%-8s | %-12s | %-10s | %-12s\n", "Threads", "Avg Time (s)", "Speedup", "Efficiency");
     printf("----------------------------------------------------\n");
     
-    // Display sequential baseline
-    printf("%-8d | %-12.6f | %-10.2f | %-12.2f%%\n", 
-           1, sequential_time, 1.0, 100.0);
+    double sequential_time = 0.0;
     
-    // Benchmark parallel configurations
-    for (int t = 1; t < num_thread_configs; t++) {  // Skip threads=1 since it's baseline
+    for (int t = 0; t < num_thread_configs; t++) {
         int threads = thread_counts[t];
         double total_time = 0.0;
         
@@ -261,22 +222,34 @@ void runOpenMPBenchmark(void) {
             generateRandomArray(arr, array_size, MAX_VALUE);
             
             double start_time = getCurrentTime();
-            parallelInsertionSortAsc(arr, array_size, threads);
-            double end_time = getCurrentTime();
             
+            if (threads == 1) {
+                insertionSortAsc(arr, array_size);
+            } else {
+                parallelInsertionSortAsc(arr, array_size, threads);
+            }
+            
+            double end_time = getCurrentTime();
             total_time += (end_time - start_time);
             free(arr);
         }
         
         double avg_time = total_time / NUM_RUNS;
-        double speedup = sequential_time / avg_time;
-        double efficiency = (speedup / threads) * 100.0;
         
-        printf("%-8d | %-12.6f | %-10.2f | %-12.2f%%\n", 
-               threads, avg_time, speedup, efficiency);
+        if (threads == 1) {
+            sequential_time = avg_time;
+            printf("%-8d | %-12.6f | %-10.2f | %-12.2f%%\n", 
+                   threads, avg_time, 1.0, 100.0);
+        } else {
+            double speedup = sequential_time / avg_time;
+            double efficiency = (speedup / threads) * 100.0;
+            printf("%-8d | %-12.6f | %-10.2f | %-12.2f%%\n", 
+                   threads, avg_time, speedup, efficiency);
+        }
     }
     
     printf("\n" CYAN "=== PHÂN TÍCH KẾT QUẢ ===" RESET "\n");
+    printf("✅ Sequential baseline: %.6f seconds\n", sequential_time);
     printf("🎯 Thread counts tested: 1(tuần tự), 3, 5, 7, 9, 11\n");
     printf("📊 Array size: %d elements\n", array_size);
     printf("📈 Efficiency = (Speedup / Threads) × 100%%\n");
@@ -334,22 +307,12 @@ void runPthreadsBenchmark(void) {
     printf("Array size: %d elements\n", array_size);
     printf("Runs per configuration: %d\n\n", NUM_RUNS);
     
-    // Measure sequential baseline first
-    double sequential_time = measureSequentialBaseline(array_size, NUM_RUNS);
-    if (sequential_time < 0) {
-        printf(RED "❌ Failed to measure sequential baseline\n" RESET);
-        return;
-    }
-    
-    printf("\n%-8s | %-12s | %-10s | %-12s\n", "Threads", "Avg Time (s)", "Speedup", "Efficiency");
+    printf("%-8s | %-12s | %-10s | %-12s\n", "Threads", "Avg Time (s)", "Speedup", "Efficiency");
     printf("----------------------------------------------------\n");
     
-    // Display sequential baseline
-    printf("%-8d | %-12.6f | %-10.2f | %-12.2f%%\n", 
-           1, sequential_time, 1.0, 100.0);
+    double sequential_time = 0.0;
     
-    // Benchmark parallel configurations
-    for (int t = 1; t < num_thread_configs; t++) {  // Skip threads=1 since it's baseline
+    for (int t = 0; t < num_thread_configs; t++) {
         int threads = thread_counts[t];
         double total_time = 0.0;
         
@@ -363,22 +326,34 @@ void runPthreadsBenchmark(void) {
             generateRandomArray(arr, array_size, MAX_VALUE);
             
             double start_time = getCurrentTime();
-            parallelInsertionSortPthreadsAsc(arr, array_size, threads);
-            double end_time = getCurrentTime();
             
+            if (threads == 1) {
+                insertionSortAsc(arr, array_size);
+            } else {
+                parallelInsertionSortPthreadsAsc(arr, array_size, threads);
+            }
+            
+            double end_time = getCurrentTime();
             total_time += (end_time - start_time);
             free(arr);
         }
         
         double avg_time = total_time / NUM_RUNS;
-        double speedup = sequential_time / avg_time;
-        double efficiency = (speedup / threads) * 100.0;
         
-        printf("%-8d | %-12.6f | %-10.2f | %-12.2f%%\n", 
-               threads, avg_time, speedup, efficiency);
+        if (threads == 1) {
+            sequential_time = avg_time;
+            printf("%-8d | %-12.6f | %-10.2f | %-12.2f%%\n", 
+                   threads, avg_time, 1.0, 100.0);
+        } else {
+            double speedup = sequential_time / avg_time;
+            double efficiency = (speedup / threads) * 100.0;
+            printf("%-8d | %-12.6f | %-10.2f | %-12.2f%%\n", 
+                   threads, avg_time, speedup, efficiency);
+        }
     }
     
     printf("\n" CYAN "=== PHÂN TÍCH KẾT QUẢ ===" RESET "\n");
+    printf("✅ Sequential baseline: %.6f seconds\n", sequential_time);
     printf("🎯 Thread counts tested: 1(tuần tự), 3, 5, 7, 9, 11\n");
     printf("📊 Array size: %d elements\n", array_size);
     printf("📈 Efficiency = (Speedup / Threads) × 100%%\n");
@@ -471,11 +446,19 @@ void runMPIBenchmark(void) {
     // Get sequential baseline (only on rank 0)
     double sequential_time = 0.0;
     if (rank == 0) {
-        sequential_time = measureSequentialBaseline(array_size, NUM_RUNS);
-        if (sequential_time < 0) {
-            printf(RED "❌ Failed to measure sequential baseline\n" RESET);
-            return;
+        double total_seq_time = 0.0;
+        for (int run = 0; run < NUM_RUNS; run++) {
+            int *arr = malloc(array_size * sizeof(int));
+            generateRandomArray(arr, array_size, MAX_VALUE);
+            
+            double start_time = getCurrentTime();
+            insertionSortAsc(arr, array_size);
+            double end_time = getCurrentTime();
+            
+            total_seq_time += (end_time - start_time);
+            free(arr);
         }
+        sequential_time = total_seq_time / NUM_RUNS;
     }
     
     // Broadcast sequential time to all processes
@@ -558,13 +541,19 @@ void runAllComparison(void) {
     double times[4] = {0, 0, 0, 0};
     const char* methods[] = {"Sequential", "OpenMP", "Pthreads", "MPI"};
     
-    // 1. Sequential baseline
-    times[0] = measureSequentialBaseline(array_size, NUM_RUNS);
-    if (times[0] < 0) {
-        printf(RED "❌ Failed to measure sequential baseline\n" RESET);
-        free(original);
-        return;
+    // 1. Sequential
+    for (int run = 0; run < NUM_RUNS; run++) {
+        int *arr = malloc(array_size * sizeof(int));
+        copyArray(original, arr, array_size);
+        
+        double start_time = getCurrentTime();
+        insertionSortAsc(arr, array_size);
+        double end_time = getCurrentTime();
+        
+        times[0] += (end_time - start_time);
+        free(arr);
     }
+    times[0] /= NUM_RUNS;
     
     // 2. OpenMP
     for (int run = 0; run < NUM_RUNS; run++) {
@@ -922,11 +911,18 @@ void benchmarkMPISort(int array_size) {
     
     // First, get sequential baseline (only on rank 0)
     if (rank == 0) {
-        sequential_time = measureSequentialBaseline(array_size, NUM_RUNS);
-        if (sequential_time < 0) {
-            printf(RED "❌ Failed to measure sequential baseline\n" RESET);
-            return;
+        for (int run = 0; run < NUM_RUNS; run++) {
+            int *arr = malloc(array_size * sizeof(int));
+            generateRandomArray(arr, array_size, MAX_VALUE);
+            
+            double start_time = getCurrentTime();
+            insertionSortAsc(arr, array_size);
+            double end_time = getCurrentTime();
+            
+            sequential_time += (end_time - start_time);
+            free(arr);
         }
+        sequential_time /= NUM_RUNS;
     }
     
     // MPI benchmark
