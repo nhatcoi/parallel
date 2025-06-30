@@ -4,10 +4,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <omp.h>
 #include <pthread.h>
 
-// Conditional MPI inclusion
+// Conditional includes
+#ifdef _OPENMP
+#include <omp.h>
+#endif
+
 #ifdef HAVE_MPI
 #include <mpi.h>
 #endif
@@ -55,6 +58,7 @@ void demonstrateSortingCorrectness(void);
 void printSystemInformation(void);
 void runCompleteBenchmark(void);
 void printLibraryInfo(void);
+void runCustomThreadBenchmark(void);
 
 // ========== DEMO FUNCTIONS ==========
 void runBasicSortingDemo(void);
@@ -67,6 +71,7 @@ void benchmarkPthreadsSort(int array_size, int num_threads);
 // MPI demo functions (available always, but with stubs when MPI disabled)
 void demonstrateMPISort(void);
 void benchmarkMPISort(int array_size);
+void runMPIBenchmark(void);
 void printMPISystemInfo(void);
 void runComprehensiveMPITest(void);
 

@@ -88,7 +88,17 @@ void merge_mpi_chunks(int arr[], int* chunk_sizes, int num_procs, int total_size
     
     // Iteratively merge chunks using binary merge approach
     int active_chunks = num_procs;
+    int iteration = 0;
+    const int MAX_ITERATIONS = 100; // Safety limit
+    
     while (active_chunks > 1) {
+        // Safety check to prevent infinite loops
+        iteration++;
+        if (iteration > MAX_ITERATIONS) {
+            printf(RED "Warning: MPI merge exceeded maximum iterations, breaking\n" RESET);
+            break;
+        }
+        
         int new_active = (active_chunks + 1) / 2;
         
         for (int i = 0; i < new_active; i++) {
@@ -101,6 +111,12 @@ void merge_mpi_chunks(int arr[], int* chunk_sizes, int num_procs, int total_size
                 int mid = chunk_starts[left_idx] + chunk_sizes[left_idx] - 1;
                 int right = chunk_starts[right_idx] + chunk_sizes[right_idx] - 1;
                 
+                // Safety check for valid indices
+                if (left < 0 || mid >= total_size || right >= total_size || mid < left || right < mid) {
+                    printf(RED "Warning: Invalid merge indices detected, skipping\n" RESET);
+                    continue;
+                }
+                
                 merge_two_arrays_mpi(arr, left, mid, right, ascending);
                 
                 // Update chunk info for merged chunk
@@ -111,6 +127,12 @@ void merge_mpi_chunks(int arr[], int* chunk_sizes, int num_procs, int total_size
                 chunk_sizes[i] = chunk_sizes[left_idx];
                 chunk_starts[i] = chunk_starts[left_idx];
             }
+        }
+        
+        // Safety check: ensure we're making progress BEFORE updating active_chunks
+        if (new_active >= active_chunks && active_chunks > 1) {
+            printf(RED "Warning: MPI merge not making progress, breaking\n" RESET);
+            break;
         }
         
         active_chunks = new_active;
@@ -128,6 +150,18 @@ void parallelInsertionSortMPI(int a[], int n, int ascending) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     
     if (n <= 1) return;
+    
+    // For small arrays or single process, use sequential sort to avoid MPI overhead
+    if (n < 1000 || size <= 1) {
+        if (rank == 0) {
+            if (ascending) {
+                insertionSortAsc(a, n);
+            } else {
+                insertionSortDesc(a, n);
+            }
+        }
+        return;
+    }
     
     // Calculate chunk sizes with load balancing
     int base_chunk_size = n / size;
@@ -154,12 +188,16 @@ void parallelInsertionSortMPI(int a[], int n, int ascending) {
     
     // Allocate local array
     int* local_array = (int*)malloc(local_chunk_size * sizeof(int));
+    if (local_array == NULL) {
+        printf(RED "Error: Failed to allocate memory for local array on rank %d\n" RESET, rank);
+        MPI_Abort(MPI_COMM_WORLD, 1);
+    }
     
     // Scatter data to all processes
     MPI_Scatterv(a, send_counts, displacements, MPI_INT, 
                  local_array, local_chunk_size, MPI_INT, 0, MPI_COMM_WORLD);
     
-    // Sort local chunk
+    // Sort local chunk (no synchronization needed - independent work)
     if (ascending) {
         insertionSortAsc(local_array, local_chunk_size);
     } else {
@@ -176,6 +214,9 @@ void parallelInsertionSortMPI(int a[], int n, int ascending) {
         free(send_counts);
         free(displacements);
     }
+    
+    // Final synchronization
+    MPI_Barrier(MPI_COMM_WORLD);
     
     free(local_array);
 }
