@@ -1,6 +1,6 @@
-#include "../../include/sort_ogt.h"
+#include "sort_ogt.h"
 
-// Sequential insertion sort - ascending order
+// Sắp xếp chèn tuần tự - thứ tự tăng dần
 void insertionSortAsc(int a[], int n) {
     for (int i = 1; i < n; i++) {
         int key = a[i];
@@ -14,7 +14,7 @@ void insertionSortAsc(int a[], int n) {
     }
 }
 
-// Sequential insertion sort - descending order
+// Sắp xếp chèn tuần tự - thứ tự giảm dần
 void insertionSortDesc(int a[], int n) {
     for (int i = 1; i < n; i++) {
         int key = a[i];

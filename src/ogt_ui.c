@@ -1,25 +1,25 @@
-#include "../../include/sort_ogt.h"
+#include "sort_ogt.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <unistd.h>  // for isatty()
-#include <omp.h>     // for OpenMP functions
+#include <unistd.h>  // cho isatty()
+#include <omp.h>     // cho các hàm OpenMP
 
 #define MAX_ARRAY_SIZE 100000
 #define MAX_VALUE 10000
 #define NUM_RUNS 5
 
-// ========== UTILITY FUNCTIONS ==========
+// ========== CÁC HÀM TIỆN ÍCH ==========
 
-// Function to print an array
+// Hàm in mảng
 static void printArray(int arr[], int size) {
     for (int i = 0; i < size; i++)
         printf("%d ", arr[i]);
     printf("\n");
 }
 
-// Function to get thread count input from user with validation
+// Hàm lấy số luồng từ người dùng với xác thực
 static int getThreadCountInput(void) {
     int threads;
     int max_threads = omp_get_max_threads();
@@ -27,7 +27,7 @@ static int getThreadCountInput(void) {
     printf("\n" CYAN "📏 Nhập số luồng (1-%d): " RESET, max_threads);
     scanf("%d", &threads);
     
-    // Validate input
+    // Xác thực đầu vào
     if (threads < 1) {
         printf(YELLOW "⚠️  Số luồng quá nhỏ, sử dụng 1 luồng" RESET "\n");
         threads = 1;
@@ -40,7 +40,7 @@ static int getThreadCountInput(void) {
     return threads;
 }
 
-// Function to get array size input from user with validation
+// Hàm lấy kích thước mảng từ người dùng với xác thực
 static int getArraySizeInput(void) {
     int array_size;
     const int MIN_SIZE = 1000;
@@ -49,7 +49,7 @@ static int getArraySizeInput(void) {
     printf("\n" CYAN "📏 Nhập số phần tử mảng (%d-%d): " RESET, MIN_SIZE, MAX_SIZE);
     scanf("%d", &array_size);
     
-    // Validate input
+    // Xác thực đầu vào
     if (array_size < MIN_SIZE) {
         printf(YELLOW "⚠️  Kích thước quá nhỏ, sử dụng %d phần tử" RESET "\n", MIN_SIZE);
         array_size = MIN_SIZE;
@@ -62,13 +62,13 @@ static int getArraySizeInput(void) {
     return array_size;
 }
 
-// Print benchmark results in formatted table
+// In kết quả benchmark theo bảng định dạng
 void printBenchmarkResults(const char* sort_type, int array_size, int threads, double avg_time, double speedup) {
     printf("%-15s | %-10d | %-8d | %-12.6f | %-10.4f\n", 
            sort_type, array_size, threads, avg_time, speedup);
 }
 
-// Print library information
+// In thông tin thư viện
 void printLibraryInfo(void) {
     printf("\n" MAGENTA "╔══════════════════════════════════════════════════════╗\n");
     printf("║                   SORT OGT LIBRARY                   ║\n");
@@ -78,7 +78,7 @@ void printLibraryInfo(void) {
     printf("╚══════════════════════════════════════════════════════╝" RESET "\n");
 }
 
-// Print system information
+// In thông tin hệ thống
 void printSystemInformation(void) {
     printf("\n" YELLOW "=== SYSTEM INFORMATION ===" RESET "\n");
     printf("Maximum threads available: %d\n", omp_get_max_threads());
@@ -94,7 +94,7 @@ void printSystemInformation(void) {
     printf("\n");
 }
 
-// ========== 1. SEQUENTIAL SORTING FUNCTIONS ==========
+// ========== 1. CÁC HÀM SẮP XẾP TUẦN TỰ ==========
 
 void runSequentialDemo(void) {
     printf("\n" GREEN "=== DEMO TUẦN TỰ (SEQUENTIAL) ===" RESET "\n");
@@ -161,7 +161,7 @@ void runSequentialBenchmark(void) {
     }
 }
 
-// ========== 2. OPENMP SORTING FUNCTIONS ==========
+// ========== 2. CÁC HÀM SẮP XẾP OPENMP ==========
 
 void runOpenMPDemo(void) {
     printf("\n" CYAN "=== DEMO OPENMP ===" RESET "\n");
@@ -249,13 +249,13 @@ void runOpenMPBenchmark(void) {
     }
     
     printf("\n" CYAN "=== PHÂN TÍCH KẾT QUẢ ===" RESET "\n");
-    printf("✅ Sequential baseline: %.6f seconds\n", sequential_time);
-    printf("🎯 Thread counts tested: 1(tuần tự), 3, 5, 7, 9, 11\n");
-    printf("📊 Array size: %d elements\n", array_size);
+    printf("✅ Sort tuần tự: %.6f s\n", sequential_time);
+    printf("🎯 Các số luồng test: 1(tuần tự), 3, 5, 7, 9, 11\n");
+    printf("📊 Kích thước Array: %d elements\n", array_size);
     printf("📈 Efficiency = (Speedup / Threads) × 100%%\n");
 }
 
-// ========== 3. PTHREADS SORTING FUNCTIONS ==========
+// ========== 3. CÁC HÀM SẮP XẾP PTHREADS ==========
 
 void runPthreadsDemo(void) {
     printf("\n" BLUE "=== DEMO PTHREADS ===" RESET "\n");
@@ -359,7 +359,7 @@ void runPthreadsBenchmark(void) {
     printf("📈 Efficiency = (Speedup / Threads) × 100%%\n");
 }
 
-// ========== 4. MPI SORTING FUNCTIONS ==========
+// ========== 4. CÁC HÀM SẮP XẾP MPI ==========
 
 void runMPIDemo(void) {
     printf("\n" YELLOW "=== DEMO MPI ===" RESET "\n");
@@ -412,11 +412,13 @@ void runComprehensiveMPITest(void) {
 }
 
 void runMPIBenchmark(void) {
-    printf("\n" YELLOW "=== BENCHMARK MPI ===" RESET "\n");
-    
 #ifdef HAVE_MPI
     int rank, size;
     getMPIInfo(&rank, &size);
+    
+    if (rank == 0) {
+        printf("\n" YELLOW "=== BENCHMARK MPI ===" RESET "\n");
+    }
     
     int array_size;
     if (rank == 0) {
@@ -514,12 +516,13 @@ void runMPIBenchmark(void) {
     }
     
 #else
+    printf("\n" YELLOW "=== BENCHMARK MPI ===" RESET "\n");
     printf("MPI not available - cannot run MPI benchmark\n");
     printf("This would show comparison between MPI and sequential sorting\n");
 #endif
 }
 
-// ========== 5. COMPARISON FUNCTION ==========
+// ========== 5. HÀM SO SÁNH ==========
 
 void runAllComparison(void) {
     printf("\n" MAGENTA "=== SO SÁNH TẤT CẢ 4 KIỂU SORT ===" RESET "\n");
@@ -642,7 +645,7 @@ void runAllComparison(void) {
     free(original);
 }
 
-// ========== MAIN UI FUNCTION ==========
+// ========== HÀM GIAO DIỆN CHÍNH ==========
 
 void overallTestOGT(void) {
     int choice;
@@ -727,71 +730,192 @@ void overallTestOGT(void) {
         
         switch (choice) {
             case 1: {
-                printf("\n" GREEN "=== TUẦN TỰ (SEQUENTIAL) ===" RESET "\n");
-                printf("1. Demo\n");
-                printf("2. Benchmark\n");
-                printf("Chọn (1-2): ");
+#ifdef HAVE_MPI
+                if (isMPIInitialized()) {
+                    int rank;
+                    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+                    if (rank == 0) {
+#endif
+                        printf("\n" GREEN "=== TUẦN TỰ (SEQUENTIAL) ===" RESET "\n");
+                        printf("1. Demo\n");
+                        printf("2. Benchmark\n");
+                        printf("Chọn (1-2): ");
+#ifdef HAVE_MPI
+                    }
+                }
+#endif
                 int sub_choice;
-                scanf("%d", &sub_choice);
+#ifdef HAVE_MPI
+                if (isMPIInitialized()) {
+                    int rank;
+                    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+                    if (rank == 0) {
+                        scanf("%d", &sub_choice);
+                    }
+                    MPI_Bcast(&sub_choice, 1, MPI_INT, 0, MPI_COMM_WORLD);
+                } else {
+#endif
+                    scanf("%d", &sub_choice);
+#ifdef HAVE_MPI
+                }
+#endif
                 
                 if (sub_choice == 1) {
                     runSequentialDemo();
                 } else if (sub_choice == 2) {
                     runSequentialBenchmark();
                 } else {
-                    printf(RED "❌ Lựa chọn không hợp lệ!" RESET "\n");
+#ifdef HAVE_MPI
+                    if (isMPIInitialized()) {
+                        int rank;
+                        MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+                        if (rank == 0) {
+#endif
+                            printf(RED "❌ Lựa chọn không hợp lệ!" RESET "\n");
+#ifdef HAVE_MPI
+                        }
+                    } else {
+                        printf(RED "❌ Lựa chọn không hợp lệ!" RESET "\n");
+                    }
+#endif
                 }
                 break;
             }
             
             case 2: {
-                printf("\n" CYAN "=== OPENMP ===" RESET "\n");
-                printf("1. Demo\n");
-                printf("2. Benchmark\n");
-                printf("Chọn (1-2): ");
+#ifdef HAVE_MPI
+                if (isMPIInitialized()) {
+                    int rank;
+                    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+                    if (rank == 0) {
+#endif
+                        printf("\n" CYAN "=== OPENMP ===" RESET "\n");
+                        printf("1. Demo\n");
+                        printf("2. Benchmark\n");
+                        printf("Chọn (1-2): ");
+#ifdef HAVE_MPI
+                    }
+                }
+#endif
                 int sub_choice;
-                scanf("%d", &sub_choice);
+#ifdef HAVE_MPI
+                if (isMPIInitialized()) {
+                    int rank;
+                    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+                    if (rank == 0) {
+                        scanf("%d", &sub_choice);
+                    }
+                    MPI_Bcast(&sub_choice, 1, MPI_INT, 0, MPI_COMM_WORLD);
+                } else {
+#endif
+                    scanf("%d", &sub_choice);
+#ifdef HAVE_MPI
+                }
+#endif
                 
                 if (sub_choice == 1) {
                     runOpenMPDemo();
                 } else if (sub_choice == 2) {
                     runOpenMPBenchmark();
                 } else {
-                    printf(RED "❌ Lựa chọn không hợp lệ!" RESET "\n");
+#ifdef HAVE_MPI
+                    if (isMPIInitialized()) {
+                        int rank;
+                        MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+                        if (rank == 0) {
+#endif
+                            printf(RED "❌ Lựa chọn không hợp lệ!" RESET "\n");
+#ifdef HAVE_MPI
+                        }
+                    } else {
+                        printf(RED "❌ Lựa chọn không hợp lệ!" RESET "\n");
+                    }
+#endif
                 }
                 break;
             }
             
             case 3: {
-                printf("\n" BLUE "=== PTHREADS ===" RESET "\n");
-                printf("1. Demo\n");
-                printf("2. Benchmark\n");
-                printf("Chọn (1-2): ");
+#ifdef HAVE_MPI
+                if (isMPIInitialized()) {
+                    int rank;
+                    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+                    if (rank == 0) {
+#endif
+                        printf("\n" BLUE "=== PTHREADS ===" RESET "\n");
+                        printf("1. Demo\n");
+                        printf("2. Benchmark\n");
+                        printf("Chọn (1-2): ");
+#ifdef HAVE_MPI
+                    }
+                }
+#endif
                 int sub_choice;
-                scanf("%d", &sub_choice);
+#ifdef HAVE_MPI
+                if (isMPIInitialized()) {
+                    int rank;
+                    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+                    if (rank == 0) {
+                        scanf("%d", &sub_choice);
+                    }
+                    MPI_Bcast(&sub_choice, 1, MPI_INT, 0, MPI_COMM_WORLD);
+                } else {
+#endif
+                    scanf("%d", &sub_choice);
+#ifdef HAVE_MPI
+                }
+#endif
                 
                 if (sub_choice == 1) {
                     runPthreadsDemo();
                 } else if (sub_choice == 2) {
                     runPthreadsBenchmark();
                 } else {
-                    printf(RED "❌ Lựa chọn không hợp lệ!" RESET "\n");
+#ifdef HAVE_MPI
+                    if (isMPIInitialized()) {
+                        int rank;
+                        MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+                        if (rank == 0) {
+#endif
+                            printf(RED "❌ Lựa chọn không hợp lệ!" RESET "\n");
+#ifdef HAVE_MPI
+                        }
+                    } else {
+                        printf(RED "❌ Lựa chọn không hợp lệ!" RESET "\n");
+                    }
+#endif
                 }
                 break;
             }
             
-            case 4: {
-                printf("\n" YELLOW "=== MPI ===" RESET "\n");
-                printf("1. Demo\n");
-                printf("2. Benchmark\n");
-                printf("Chọn (1-2): ");
-                int sub_choice;
-                scanf("%d", &sub_choice);
-                
+                        case 4: {
 #ifdef HAVE_MPI
-                // Broadcast sub-choice to all MPI processes
                 if (isMPIInitialized()) {
+                    int rank;
+                    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+                    if (rank == 0) {
+#endif
+                        printf("\n" YELLOW "=== MPI ===" RESET "\n");
+                        printf("1. Demo\n");
+                        printf("2. Benchmark\n");
+                        printf("Chọn (1-2): ");
+#ifdef HAVE_MPI
+                    }
+                }
+#endif
+                int sub_choice;
+#ifdef HAVE_MPI
+                if (isMPIInitialized()) {
+                    int rank;
+                    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+                    if (rank == 0) {
+                        scanf("%d", &sub_choice);
+                    }
                     MPI_Bcast(&sub_choice, 1, MPI_INT, 0, MPI_COMM_WORLD);
+                } else {
+#endif
+                    scanf("%d", &sub_choice);
+#ifdef HAVE_MPI
                 }
 #endif
                 
@@ -800,7 +924,19 @@ void overallTestOGT(void) {
                 } else if (sub_choice == 2) {
                     runMPIBenchmark();
                 } else {
-                    printf(RED "❌ Lựa chọn không hợp lệ!" RESET "\n");
+#ifdef HAVE_MPI
+                    if (isMPIInitialized()) {
+                        int rank;
+                        MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+                        if (rank == 0) {
+#endif
+                            printf(RED "❌ Lựa chọn không hợp lệ!" RESET "\n");
+#ifdef HAVE_MPI
+                        }
+                    } else {
+                        printf(RED "❌ Lựa chọn không hợp lệ!" RESET "\n");
+                    }
+#endif
                 }
                 break;
             }
@@ -842,8 +978,8 @@ void overallTestOGT(void) {
     } while (choice != 0);
 }
 
-// ========== LEGACY FUNCTION STUBS ==========
-// Keep these for backward compatibility
+// ========== CÁC HÀM CŨ ĐỂ TƯƠNG THÍCH ==========
+// Giữ những hàm này để tương thích ngược
 
 void runBasicSortingDemo(void) {
     runSequentialDemo();

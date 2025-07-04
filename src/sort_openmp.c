@@ -1,10 +1,10 @@
-#include "../../include/sort_ogt.h"
+#include "sort_ogt.h"
 #include <omp.h>
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
 
-// Parallel insertion sort - ascending order (manual chunking approach)
+// Sắp xếp chèn song song - thứ tự tăng dần (phương pháp chia khối thủ công)
 void parallelInsertionSortAsc(int a[], int n, int num_threads) {
     omp_set_num_threads(num_threads); // set số thread
     
@@ -16,12 +16,12 @@ void parallelInsertionSortAsc(int a[], int n, int num_threads) {
         return;
     }
     
-    // Pre-allocate memory để tránh overhead trong parallel region
+    // Cấp phát bộ nhớ trước để tránh overhead trong vùng song song
     int chunk_size = n / num_threads;
     int **temp_arrays = malloc(num_threads * sizeof(int*));
     int *chunk_sizes = malloc(num_threads * sizeof(int));
     
-    // Pre-allocate tất cả temp arrays trước parallel region
+    // Cấp phát trước tất cả temp arrays trước vùng song song
     for (int t = 0; t < num_threads; t++) {
         int start = t * chunk_size;
         int end = (t == num_threads - 1) ? n : start + chunk_size;
@@ -29,7 +29,7 @@ void parallelInsertionSortAsc(int a[], int n, int num_threads) {
         temp_arrays[t] = malloc(chunk_sizes[t] * sizeof(int));
     }
     
-    // Single parallel region - hiệu quả hơn parallel for
+    // Vùng song song đơn - hiệu quả hơn parallel for
     #pragma omp parallel
     {
         int tid = omp_get_thread_num(); // lấy id của thread hiện tại
@@ -43,7 +43,7 @@ void parallelInsertionSortAsc(int a[], int n, int num_threads) {
         insertionSortAsc(temp_arrays[tid], local_size);
     }
     
-    // k-way merge của sorted chunks
+    // trộn k-chiều của các khối đã sắp xếp
     int *result = malloc(n * sizeof(int));
     int *indices = calloc(num_threads, sizeof(int));
     
@@ -76,7 +76,7 @@ void parallelInsertionSortAsc(int a[], int n, int num_threads) {
     free(indices);
 }
 
-// Parallel insertion sort - descending order
+// Sắp xếp chèn song song - thứ tự giảm dần
 void parallelInsertionSortDesc(int a[], int n, int num_threads) {
     omp_set_num_threads(num_threads);
     
@@ -88,12 +88,12 @@ void parallelInsertionSortDesc(int a[], int n, int num_threads) {
         return;
     }
     
-    // Manual chunking approach (hiệu quả hơn parallel for)
+    // Phương pháp chia khối thủ công (hiệu quả hơn parallel for)
     int chunk_size = n / num_threads;
     int **temp_arrays = malloc(num_threads * sizeof(int*));
     int *chunk_sizes = malloc(num_threads * sizeof(int));
     
-    // Pre-allocate memory
+    // Cấp phát bộ nhớ trước
     for (int t = 0; t < num_threads; t++) {
         int start = t * chunk_size;
         int end = (t == num_threads - 1) ? n : start + chunk_size;
@@ -101,7 +101,7 @@ void parallelInsertionSortDesc(int a[], int n, int num_threads) {
         temp_arrays[t] = malloc(chunk_sizes[t] * sizeof(int));
     }
     
-    // Single parallel region
+    // Vùng song song đơn
     #pragma omp parallel
     {
         int tid = omp_get_thread_num();
@@ -115,7 +115,7 @@ void parallelInsertionSortDesc(int a[], int n, int num_threads) {
         insertionSortDesc(temp_arrays[tid], local_size);
     }
     
-    // k-way merge của sorted chunks (descending)
+    // trộn k-chiều của các khối đã sắp xếp (giảm dần)
     int *result = malloc(n * sizeof(int));
     int *indices = calloc(num_threads, sizeof(int));
     

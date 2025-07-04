@@ -1,4 +1,4 @@
-#include "../../include/sort_ogt.h"
+#include "sort_ogt.h"
 #include <sys/time.h>
 #include <stdlib.h>
 #include <string.h>

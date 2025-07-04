@@ -5,7 +5,7 @@
 #include <mpi.h>
 #include <sys/time.h>
 
-// Structure for chunk information in MPI
+// Struct chứa thông tin chunk trong MPI
 typedef struct {
     int start;
     int end;
@@ -14,24 +14,24 @@ typedef struct {
 } MPIChunkInfo;
 
 /**
- * Merge two sorted arrays (MPI version)
+ * Trộn hai mảng đã sắp xếp (phiên bản MPI)
  */
 void merge_two_arrays_mpi(int arr[], int left, int mid, int right, int ascending) {
     int i, j, k;
     int n1 = mid - left + 1;
     int n2 = right - mid;
     
-    // Create temporary arrays
+    // Tạo mảng tạm thời
     int* left_arr = (int*)malloc(n1 * sizeof(int));
     int* right_arr = (int*)malloc(n2 * sizeof(int));
     
-    // Copy data to temporary arrays
+    // Sao chép dữ liệu vào mảng tạm thời
     for (i = 0; i < n1; i++)
         left_arr[i] = arr[left + i];
     for (j = 0; j < n2; j++)
         right_arr[j] = arr[mid + 1 + j];
     
-    // Merge the temporary arrays back into arr[left..right]
+    // Trộn các mảng tạm thời về arr[left..right]
     i = 0; j = 0; k = left;
     
     if (ascending) {
@@ -56,14 +56,14 @@ void merge_two_arrays_mpi(int arr[], int left, int mid, int right, int ascending
             }
             k++;
         }
-    }
+        }
     
-    // Copy remaining elements
+    // Sao chép các phần tử còn lại
     while (i < n1) {
         arr[k] = left_arr[i];
         i++; k++;
     }
-    
+
     while (j < n2) {
         arr[k] = right_arr[j];
         j++; k++;
@@ -74,25 +74,25 @@ void merge_two_arrays_mpi(int arr[], int left, int mid, int right, int ascending
 }
 
 /**
- * Merge sorted chunks collected from all MPI processes
+ * Trộn các chunk đã sắp xếp thu thập từ tất cả các tiến trình MPI
  */
 void merge_mpi_chunks(int arr[], int* chunk_sizes, int num_procs, int total_size, int ascending) {
     if (num_procs <= 1) return;
     
-    // Calculate chunk positions
+    // Tính toán vị trí các chunk
     int* chunk_starts = (int*)malloc(num_procs * sizeof(int));
     chunk_starts[0] = 0;
     for (int i = 1; i < num_procs; i++) {
         chunk_starts[i] = chunk_starts[i-1] + chunk_sizes[i-1];
     }
     
-    // Iteratively merge chunks using binary merge approach
+    // Trộn các chunk một cách lặp lại sử dụng phương pháp trộn nhị phân
     int active_chunks = num_procs;
     int iteration = 0;
-    const int MAX_ITERATIONS = 100; // Safety limit
+    const int MAX_ITERATIONS = 100; // Giới hạn an toàn
     
     while (active_chunks > 1) {
-        // Safety check to prevent infinite loops
+        // Kiểm tra an toàn để ngăn vòng lặp vô hạn
         iteration++;
         if (iteration > MAX_ITERATIONS) {
             printf(RED "Warning: MPI merge exceeded maximum iterations, breaking\n" RESET);
@@ -106,12 +106,12 @@ void merge_mpi_chunks(int arr[], int* chunk_sizes, int num_procs, int total_size
             int right_idx = left_idx + 1;
             
             if (right_idx < active_chunks) {
-                // Merge chunk left_idx and right_idx
+                // Trộn chunk left_idx và right_idx
                 int left = chunk_starts[left_idx];
                 int mid = chunk_starts[left_idx] + chunk_sizes[left_idx] - 1;
                 int right = chunk_starts[right_idx] + chunk_sizes[right_idx] - 1;
                 
-                // Safety check for valid indices
+                // Kiểm tra an toàn cho chỉ số hợp lệ
                 if (left < 0 || mid >= total_size || right >= total_size || mid < left || right < mid) {
                     printf(RED "Warning: Invalid merge indices detected, skipping\n" RESET);
                     continue;
@@ -119,17 +119,17 @@ void merge_mpi_chunks(int arr[], int* chunk_sizes, int num_procs, int total_size
                 
                 merge_two_arrays_mpi(arr, left, mid, right, ascending);
                 
-                // Update chunk info for merged chunk
+                // Cập nhật thông tin chunk cho chunk đã trộn
                 chunk_sizes[i] = chunk_sizes[left_idx] + chunk_sizes[right_idx];
                 chunk_starts[i] = chunk_starts[left_idx];
             } else {
-                // Odd number of chunks, carry forward the last one
+                // Số chunk lẻ, chuyển tiếp chunk cuối cùng
                 chunk_sizes[i] = chunk_sizes[left_idx];
                 chunk_starts[i] = chunk_starts[left_idx];
             }
         }
         
-        // Safety check: ensure we're making progress BEFORE updating active_chunks
+        // Kiểm tra an toàn: đảm bảo có tiến bộ TRƯỚC khi cập nhật active_chunks
         if (new_active >= active_chunks && active_chunks > 1) {
             printf(RED "Warning: MPI merge not making progress, breaking\n" RESET);
             break;
@@ -142,7 +142,7 @@ void merge_mpi_chunks(int arr[], int* chunk_sizes, int num_procs, int total_size
 }
 
 /**
- * Core MPI implementation function
+ * Hàm triển khai MPI cốt lõi
  */
 void parallelInsertionSortMPI(int a[], int n, int ascending) {
     int rank, size;
@@ -151,7 +151,7 @@ void parallelInsertionSortMPI(int a[], int n, int ascending) {
     
     if (n <= 1) return;
     
-    // For small arrays or single process, use sequential sort to avoid MPI overhead
+    // Đối với mảng nhỏ hoặc tiến trình đơn, dùng sắp xếp tuần tự để tránh overhead MPI
     if (n < 1000 || size <= 1) {
         if (rank == 0) {
             if (ascending) {
@@ -163,14 +163,14 @@ void parallelInsertionSortMPI(int a[], int n, int ascending) {
         return;
     }
     
-    // Calculate chunk sizes with load balancing
+    // Tính toán kích thước chunk với cân bằng tải
     int base_chunk_size = n / size;
     int remainder = n % size;
     
-    // Calculate local chunk size for each process
+    // Tính toán kích thước chunk cục bộ cho mỗi tiến trình
     int local_chunk_size = base_chunk_size + (rank < remainder ? 1 : 0);
     
-    // Calculate displacement for scatterv
+    // Tính toán displacement cho scatterv
     int* send_counts = NULL;
     int* displacements = NULL;
     
@@ -186,18 +186,18 @@ void parallelInsertionSortMPI(int a[], int n, int ascending) {
         }
     }
     
-    // Allocate local array
+    // Cấp phát mảng cục bộ
     int* local_array = (int*)malloc(local_chunk_size * sizeof(int));
     if (local_array == NULL) {
         printf(RED "Error: Failed to allocate memory for local array on rank %d\n" RESET, rank);
         MPI_Abort(MPI_COMM_WORLD, 1);
     }
     
-    // Scatter data to all processes
+    // Phân tán dữ liệu đến tất cả các tiến trình
     MPI_Scatterv(a, send_counts, displacements, MPI_INT, 
                  local_array, local_chunk_size, MPI_INT, 0, MPI_COMM_WORLD);
     
-    // Sort local chunk (no synchronization needed - independent work)
+    // Sắp xếp chunk cục bộ (không cần đồng bộ - công việc độc lập)
     if (ascending) {
         insertionSortAsc(local_array, local_chunk_size);
     } else {
