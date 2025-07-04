@@ -1,0 +1,2 @@
+/usr/bin/ar qc libsort_ogt.a CMakeFiles/sort_ogt.dir/src/sort_seq.c.o CMakeFiles/sort_ogt.dir/src/sort_openmp.c.o CMakeFiles/sort_ogt.dir/src/sort_pthread.c.o CMakeFiles/sort_ogt.dir/src/sort_mpi.c.o CMakeFiles/sort_ogt.dir/src/utils.c.o CMakeFiles/sort_ogt.dir/src/ogt_ui.c.o
+/usr/bin/ranlib libsort_ogt.a

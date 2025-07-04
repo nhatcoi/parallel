@@ -1,4 +1,4 @@
-#include "../../include/sort_ogt.h"
+#include "sort_ogt.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -671,9 +671,10 @@ void overallTestOGT(void) {
                             MPI_Bcast(&sub_choice, 1, MPI_INT, 0, MPI_COMM_WORLD);
                             if (sub_choice == 1) {
                                 runMPIDemo();
-                            } else if (sub_choice == 2) {
-                                runMPIBenchmark();
-                            }
+                            } 
+                            // else if (sub_choice == 2) {
+                            //     runMPIBenchmark();
+                            // }
                         }
                         break;
                     case 5: // Compare all

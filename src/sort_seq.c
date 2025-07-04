@@ -1,4 +1,4 @@
-#include "../../include/sort_ogt.h"
+#include "sort_ogt.h"
 
 // Sắp xếp chèn tuần tự - thứ tự tăng dần
 void insertionSortAsc(int a[], int n) {
