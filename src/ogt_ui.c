@@ -412,11 +412,13 @@ void runComprehensiveMPITest(void) {
 }
 
 void runMPIBenchmark(void) {
-    printf("\n" YELLOW "=== BENCHMARK MPI ===" RESET "\n");
-    
 #ifdef HAVE_MPI
     int rank, size;
     getMPIInfo(&rank, &size);
+    
+    if (rank == 0) {
+        printf("\n" YELLOW "=== BENCHMARK MPI ===" RESET "\n");
+    }
     
     int array_size;
     if (rank == 0) {
@@ -514,6 +516,7 @@ void runMPIBenchmark(void) {
     }
     
 #else
+    printf("\n" YELLOW "=== BENCHMARK MPI ===" RESET "\n");
     printf("MPI not available - cannot run MPI benchmark\n");
     printf("This would show comparison between MPI and sequential sorting\n");
 #endif
@@ -671,10 +674,9 @@ void overallTestOGT(void) {
                             MPI_Bcast(&sub_choice, 1, MPI_INT, 0, MPI_COMM_WORLD);
                             if (sub_choice == 1) {
                                 runMPIDemo();
-                            } 
-                            // else if (sub_choice == 2) {
-                            //     runMPIBenchmark();
-                            // }
+                            } else if (sub_choice == 2) {
+                                runMPIBenchmark();
+                            }
                         }
                         break;
                     case 5: // Compare all
@@ -728,71 +730,192 @@ void overallTestOGT(void) {
         
         switch (choice) {
             case 1: {
-                printf("\n" GREEN "=== TUẦN TỰ (SEQUENTIAL) ===" RESET "\n");
-                printf("1. Demo\n");
-                printf("2. Benchmark\n");
-                printf("Chọn (1-2): ");
+#ifdef HAVE_MPI
+                if (isMPIInitialized()) {
+                    int rank;
+                    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+                    if (rank == 0) {
+#endif
+                        printf("\n" GREEN "=== TUẦN TỰ (SEQUENTIAL) ===" RESET "\n");
+                        printf("1. Demo\n");
+                        printf("2. Benchmark\n");
+                        printf("Chọn (1-2): ");
+#ifdef HAVE_MPI
+                    }
+                }
+#endif
                 int sub_choice;
-                scanf("%d", &sub_choice);
+#ifdef HAVE_MPI
+                if (isMPIInitialized()) {
+                    int rank;
+                    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+                    if (rank == 0) {
+                        scanf("%d", &sub_choice);
+                    }
+                    MPI_Bcast(&sub_choice, 1, MPI_INT, 0, MPI_COMM_WORLD);
+                } else {
+#endif
+                    scanf("%d", &sub_choice);
+#ifdef HAVE_MPI
+                }
+#endif
                 
                 if (sub_choice == 1) {
                     runSequentialDemo();
                 } else if (sub_choice == 2) {
                     runSequentialBenchmark();
                 } else {
-                    printf(RED "❌ Lựa chọn không hợp lệ!" RESET "\n");
+#ifdef HAVE_MPI
+                    if (isMPIInitialized()) {
+                        int rank;
+                        MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+                        if (rank == 0) {
+#endif
+                            printf(RED "❌ Lựa chọn không hợp lệ!" RESET "\n");
+#ifdef HAVE_MPI
+                        }
+                    } else {
+                        printf(RED "❌ Lựa chọn không hợp lệ!" RESET "\n");
+                    }
+#endif
                 }
                 break;
             }
             
             case 2: {
-                printf("\n" CYAN "=== OPENMP ===" RESET "\n");
-                printf("1. Demo\n");
-                printf("2. Benchmark\n");
-                printf("Chọn (1-2): ");
+#ifdef HAVE_MPI
+                if (isMPIInitialized()) {
+                    int rank;
+                    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+                    if (rank == 0) {
+#endif
+                        printf("\n" CYAN "=== OPENMP ===" RESET "\n");
+                        printf("1. Demo\n");
+                        printf("2. Benchmark\n");
+                        printf("Chọn (1-2): ");
+#ifdef HAVE_MPI
+                    }
+                }
+#endif
                 int sub_choice;
-                scanf("%d", &sub_choice);
+#ifdef HAVE_MPI
+                if (isMPIInitialized()) {
+                    int rank;
+                    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+                    if (rank == 0) {
+                        scanf("%d", &sub_choice);
+                    }
+                    MPI_Bcast(&sub_choice, 1, MPI_INT, 0, MPI_COMM_WORLD);
+                } else {
+#endif
+                    scanf("%d", &sub_choice);
+#ifdef HAVE_MPI
+                }
+#endif
                 
                 if (sub_choice == 1) {
                     runOpenMPDemo();
                 } else if (sub_choice == 2) {
                     runOpenMPBenchmark();
                 } else {
-                    printf(RED "❌ Lựa chọn không hợp lệ!" RESET "\n");
+#ifdef HAVE_MPI
+                    if (isMPIInitialized()) {
+                        int rank;
+                        MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+                        if (rank == 0) {
+#endif
+                            printf(RED "❌ Lựa chọn không hợp lệ!" RESET "\n");
+#ifdef HAVE_MPI
+                        }
+                    } else {
+                        printf(RED "❌ Lựa chọn không hợp lệ!" RESET "\n");
+                    }
+#endif
                 }
                 break;
             }
             
             case 3: {
-                printf("\n" BLUE "=== PTHREADS ===" RESET "\n");
-                printf("1. Demo\n");
-                printf("2. Benchmark\n");
-                printf("Chọn (1-2): ");
+#ifdef HAVE_MPI
+                if (isMPIInitialized()) {
+                    int rank;
+                    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+                    if (rank == 0) {
+#endif
+                        printf("\n" BLUE "=== PTHREADS ===" RESET "\n");
+                        printf("1. Demo\n");
+                        printf("2. Benchmark\n");
+                        printf("Chọn (1-2): ");
+#ifdef HAVE_MPI
+                    }
+                }
+#endif
                 int sub_choice;
-                scanf("%d", &sub_choice);
+#ifdef HAVE_MPI
+                if (isMPIInitialized()) {
+                    int rank;
+                    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+                    if (rank == 0) {
+                        scanf("%d", &sub_choice);
+                    }
+                    MPI_Bcast(&sub_choice, 1, MPI_INT, 0, MPI_COMM_WORLD);
+                } else {
+#endif
+                    scanf("%d", &sub_choice);
+#ifdef HAVE_MPI
+                }
+#endif
                 
                 if (sub_choice == 1) {
                     runPthreadsDemo();
                 } else if (sub_choice == 2) {
                     runPthreadsBenchmark();
                 } else {
-                    printf(RED "❌ Lựa chọn không hợp lệ!" RESET "\n");
+#ifdef HAVE_MPI
+                    if (isMPIInitialized()) {
+                        int rank;
+                        MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+                        if (rank == 0) {
+#endif
+                            printf(RED "❌ Lựa chọn không hợp lệ!" RESET "\n");
+#ifdef HAVE_MPI
+                        }
+                    } else {
+                        printf(RED "❌ Lựa chọn không hợp lệ!" RESET "\n");
+                    }
+#endif
                 }
                 break;
             }
             
-            case 4: {
-                printf("\n" YELLOW "=== MPI ===" RESET "\n");
-                printf("1. Demo\n");
-                printf("2. Benchmark\n");
-                printf("Chọn (1-2): ");
-                int sub_choice;
-                scanf("%d", &sub_choice);
-                
+                        case 4: {
 #ifdef HAVE_MPI
-                // Broadcast sub-choice to all MPI processes
                 if (isMPIInitialized()) {
+                    int rank;
+                    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+                    if (rank == 0) {
+#endif
+                        printf("\n" YELLOW "=== MPI ===" RESET "\n");
+                        printf("1. Demo\n");
+                        printf("2. Benchmark\n");
+                        printf("Chọn (1-2): ");
+#ifdef HAVE_MPI
+                    }
+                }
+#endif
+                int sub_choice;
+#ifdef HAVE_MPI
+                if (isMPIInitialized()) {
+                    int rank;
+                    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+                    if (rank == 0) {
+                        scanf("%d", &sub_choice);
+                    }
                     MPI_Bcast(&sub_choice, 1, MPI_INT, 0, MPI_COMM_WORLD);
+                } else {
+#endif
+                    scanf("%d", &sub_choice);
+#ifdef HAVE_MPI
                 }
 #endif
                 
@@ -801,7 +924,19 @@ void overallTestOGT(void) {
                 } else if (sub_choice == 2) {
                     runMPIBenchmark();
                 } else {
-                    printf(RED "❌ Lựa chọn không hợp lệ!" RESET "\n");
+#ifdef HAVE_MPI
+                    if (isMPIInitialized()) {
+                        int rank;
+                        MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+                        if (rank == 0) {
+#endif
+                            printf(RED "❌ Lựa chọn không hợp lệ!" RESET "\n");
+#ifdef HAVE_MPI
+                        }
+                    } else {
+                        printf(RED "❌ Lựa chọn không hợp lệ!" RESET "\n");
+                    }
+#endif
                 }
                 break;
             }
