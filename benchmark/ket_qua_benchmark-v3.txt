@@ -1,0 +1,416 @@
+[35m╔══════════════════════════════════════════════════════╗[0m
+[35m║            BỘ CÔNG CỤ BENCHMARK TỔNG HỢP             ║[0m
+[35m║              Phân Tích Sắp Xếp Song Song             ║[0m
+[35m╚══════════════════════════════════════════════════════╝[0m
+
+[36m📊 Cấu Hình Test:[0m
+Kích thước mảng: 1000 5000 10000 30000 50000 100000
+Số lượng luồng: 1 3 5 7 9 11
+Số lượng tiến trình: 1 3 5 7 9 11
+Tổng số test: 108 tests
+
+[33m🔨 Đang xây dựng project...[0m
+[32m✅ Xây dựng thành công![0m
+
+[36m🚀 Bắt đầu benchmark toàn diện...[0m
+
+[35m=== OPENMP BENCHMARK ===[0m
+[34m  Đang test: OpenMP - Kích thước: 1000, Luồng: 1[0m
+    [32m✓[0m OpenMP: 0.000073s
+[36mTiến độ: 1/1[0m
+[34m  Đang test: OpenMP - Kích thước: 1000, Luồng: 3[0m
+    [32m✓[0m OpenMP: 0.000272s
+[36mTiến độ: 2/2[0m
+[34m  Đang test: OpenMP - Kích thước: 1000, Luồng: 5[0m
+    [32m✓[0m OpenMP: 0.000034s
+[36mTiến độ: 3/3[0m
+[34m  Đang test: OpenMP - Kích thước: 1000, Luồng: 7[0m
+    [32m✓[0m OpenMP: 0.000043s
+[36mTiến độ: 4/4[0m
+[34m  Đang test: OpenMP - Kích thước: 1000, Luồng: 9[0m
+    [32m✓[0m OpenMP: 0.000051s
+[36mTiến độ: 5/5[0m
+[34m  Đang test: OpenMP - Kích thước: 1000, Luồng: 11[0m
+    [32m✓[0m OpenMP: 0.000060s
+[36mTiến độ: 6/6[0m
+[34m  Đang test: OpenMP - Kích thước: 5000, Luồng: 1[0m
+    [32m✓[0m OpenMP: 0.001643s
+[36mTiến độ: 7/7[0m
+[34m  Đang test: OpenMP - Kích thước: 5000, Luồng: 3[0m
+    [32m✓[0m OpenMP: 0.000410s
+[36mTiến độ: 8/8[0m
+[34m  Đang test: OpenMP - Kích thước: 5000, Luồng: 5[0m
+    [32m✓[0m OpenMP: 0.000172s
+[36mTiến độ: 9/9[0m
+[34m  Đang test: OpenMP - Kích thước: 5000, Luồng: 7[0m
+    [32m✓[0m OpenMP: 0.000147s
+[36mTiến độ: 10/10[0m
+[34m  Đang test: OpenMP - Kích thước: 5000, Luồng: 9[0m
+    [32m✓[0m OpenMP: 0.000125s
+[36mTiến độ: 11/11[0m
+[34m  Đang test: OpenMP - Kích thước: 5000, Luồng: 11[0m
+    [32m✓[0m OpenMP: 0.000130s
+[36mTiến độ: 12/12[0m
+[34m  Đang test: OpenMP - Kích thước: 10000, Luồng: 1[0m
+    [32m✓[0m OpenMP: 0.006408s
+[36mTiến độ: 13/13[0m
+[34m  Đang test: OpenMP - Kích thước: 10000, Luồng: 3[0m
+    [32m✓[0m OpenMP: 0.000921s
+[36mTiến độ: 14/14[0m
+[34m  Đang test: OpenMP - Kích thước: 10000, Luồng: 5[0m
+    [32m✓[0m OpenMP: 0.000538s
+[36mTiến độ: 15/15[0m
+[34m  Đang test: OpenMP - Kích thước: 10000, Luồng: 7[0m
+    [32m✓[0m OpenMP: 0.000414s
+[36mTiến độ: 16/16[0m
+[34m  Đang test: OpenMP - Kích thước: 10000, Luồng: 9[0m
+    [32m✓[0m OpenMP: 0.000300s
+[36mTiến độ: 17/17[0m
+[34m  Đang test: OpenMP - Kích thước: 10000, Luồng: 11[0m
+    [32m✓[0m OpenMP: 0.000281s
+[36mTiến độ: 18/18[0m
+[34m  Đang test: OpenMP - Kích thước: 30000, Luồng: 1[0m
+    [32m✓[0m OpenMP: 0.057380s
+[36mTiến độ: 19/19[0m
+[34m  Đang test: OpenMP - Kích thước: 30000, Luồng: 3[0m
+    [32m✓[0m OpenMP: 0.007282s
+[36mTiến độ: 20/20[0m
+[34m  Đang test: OpenMP - Kích thước: 30000, Luồng: 5[0m
+    [32m✓[0m OpenMP: 0.003974s
+[36mTiến độ: 21/21[0m
+[34m  Đang test: OpenMP - Kích thước: 30000, Luồng: 7[0m
+    [32m✓[0m OpenMP: 0.002541s
+[36mTiến độ: 22/22[0m
+[34m  Đang test: OpenMP - Kích thước: 30000, Luồng: 9[0m
+    [32m✓[0m OpenMP: 0.001811s
+[36mTiến độ: 23/23[0m
+[34m  Đang test: OpenMP - Kích thước: 30000, Luồng: 11[0m
+    [32m✓[0m OpenMP: 0.001435s
+[36mTiến độ: 24/24[0m
+[34m  Đang test: OpenMP - Kích thước: 50000, Luồng: 1[0m
+    [32m✓[0m OpenMP: 0.160181s
+[36mTiến độ: 25/25[0m
+[34m  Đang test: OpenMP - Kích thước: 50000, Luồng: 3[0m
+    [32m✓[0m OpenMP: 0.020048s
+[36mTiến độ: 26/26[0m
+[34m  Đang test: OpenMP - Kích thước: 50000, Luồng: 5[0m
+    [32m✓[0m OpenMP: 0.010641s
+[36mTiến độ: 27/27[0m
+[34m  Đang test: OpenMP - Kích thước: 50000, Luồng: 7[0m
+    [32m✓[0m OpenMP: 0.006570s
+[36mTiến độ: 28/28[0m
+[34m  Đang test: OpenMP - Kích thước: 50000, Luồng: 9[0m
+    [32m✓[0m OpenMP: 0.004486s
+[36mTiến độ: 29/29[0m
+[34m  Đang test: OpenMP - Kích thước: 50000, Luồng: 11[0m
+    [32m✓[0m OpenMP: 0.003722s
+[36mTiến độ: 30/30[0m
+[34m  Đang test: OpenMP - Kích thước: 100000, Luồng: 1[0m
+    [32m✓[0m OpenMP: 0.640471s
+[36mTiến độ: 31/31[0m
+[34m  Đang test: OpenMP - Kích thước: 100000, Luồng: 3[0m
+    [32m✓[0m OpenMP: 0.078983s
+[36mTiến độ: 32/32[0m
+[34m  Đang test: OpenMP - Kích thước: 100000, Luồng: 5[0m
+    [32m✓[0m OpenMP: 0.037460s
+[36mTiến độ: 33/33[0m
+[34m  Đang test: OpenMP - Kích thước: 100000, Luồng: 7[0m
+    [32m✓[0m OpenMP: 0.023791s
+[36mTiến độ: 34/34[0m
+[34m  Đang test: OpenMP - Kích thước: 100000, Luồng: 9[0m
+    [32m✓[0m OpenMP: 0.015819s
+[36mTiến độ: 35/35[0m
+[34m  Đang test: OpenMP - Kích thước: 100000, Luồng: 11[0m
+    [32m✓[0m OpenMP: 0.012905s
+[36mTiến độ: 36/36[0m
+
+[35m=== BENCHMARK PTHREADS ===[0m
+[34m  Đang test: Pthreads - Kích thước: 1000, Luồng: 1[0m
+    [32m✓[0m Pthreads: 0.000073s
+[36mTiến độ: 37/37[0m
+[34m  Đang test: Pthreads - Kích thước: 1000, Luồng: 3[0m
+    [32m✓[0m Pthreads: 0.000046s
+[36mTiến độ: 38/38[0m
+[34m  Đang test: Pthreads - Kích thước: 1000, Luồng: 5[0m
+    [32m✓[0m Pthreads: 0.000066s
+[36mTiến độ: 39/39[0m
+[34m  Đang test: Pthreads - Kích thước: 1000, Luồng: 7[0m
+    [32m✓[0m Pthreads: 0.000105s
+[36mTiến độ: 40/40[0m
+[34m  Đang test: Pthreads - Kích thước: 1000, Luồng: 9[0m
+    [32m✓[0m Pthreads: 0.000091s
+[36mTiến độ: 41/41[0m
+[34m  Đang test: Pthreads - Kích thước: 1000, Luồng: 11[0m
+    [32m✓[0m Pthreads: 0.000078s
+[36mTiến độ: 42/42[0m
+[34m  Đang test: Pthreads - Kích thước: 5000, Luồng: 1[0m
+    [32m✓[0m Pthreads: 0.001679s
+[36mTiến độ: 43/43[0m
+[34m  Đang test: Pthreads - Kích thước: 5000, Luồng: 3[0m
+    [32m✓[0m Pthreads: 0.000246s
+[36mTiến độ: 44/44[0m
+[34m  Đang test: Pthreads - Kích thước: 5000, Luồng: 5[0m
+    [32m✓[0m Pthreads: 0.000200s
+[36mTiến độ: 45/45[0m
+[34m  Đang test: Pthreads - Kích thước: 5000, Luồng: 7[0m
+    [32m✓[0m Pthreads: 0.000187s
+[36mTiến độ: 46/46[0m
+[34m  Đang test: Pthreads - Kích thước: 5000, Luồng: 9[0m
+    [32m✓[0m Pthreads: 0.000171s
+[36mTiến độ: 47/47[0m
+[34m  Đang test: Pthreads - Kích thước: 5000, Luồng: 11[0m
+    [32m✓[0m Pthreads: 0.000357s
+[36mTiến độ: 48/48[0m
+[34m  Đang test: Pthreads - Kích thước: 10000, Luồng: 1[0m
+    [32m✓[0m Pthreads: 0.006415s
+[36mTiến độ: 49/49[0m
+[34m  Đang test: Pthreads - Kích thước: 10000, Luồng: 3[0m
+    [32m✓[0m Pthreads: 0.000875s
+[36mTiến độ: 50/50[0m
+[34m  Đang test: Pthreads - Kích thước: 10000, Luồng: 5[0m
+    [32m✓[0m Pthreads: 0.000531s
+[36mTiến độ: 51/51[0m
+[34m  Đang test: Pthreads - Kích thước: 10000, Luồng: 7[0m
+    [32m✓[0m Pthreads: 0.000429s
+[36mTiến độ: 52/52[0m
+[34m  Đang test: Pthreads - Kích thước: 10000, Luồng: 9[0m
+    [32m✓[0m Pthreads: 0.000333s
+[36mTiến độ: 53/53[0m
+[34m  Đang test: Pthreads - Kích thước: 10000, Luồng: 11[0m
+    [32m✓[0m Pthreads: 0.000293s
+[36mTiến độ: 54/54[0m
+[34m  Đang test: Pthreads - Kích thước: 30000, Luồng: 1[0m
+    [32m✓[0m Pthreads: 0.057387s
+[36mTiến độ: 55/55[0m
+[34m  Đang test: Pthreads - Kích thước: 30000, Luồng: 3[0m
+    [32m✓[0m Pthreads: 0.006907s
+[36mTiến độ: 56/56[0m
+[34m  Đang test: Pthreads - Kích thước: 30000, Luồng: 5[0m
+    [32m✓[0m Pthreads: 0.004019s
+[36mTiến độ: 57/57[0m
+[34m  Đang test: Pthreads - Kích thước: 30000, Luồng: 7[0m
+    [32m✓[0m Pthreads: 0.002654s
+[36mTiến độ: 58/58[0m
+[34m  Đang test: Pthreads - Kích thước: 30000, Luồng: 9[0m
+    [32m✓[0m Pthreads: 0.001741s
+[36mTiến độ: 59/59[0m
+[34m  Đang test: Pthreads - Kích thước: 30000, Luồng: 11[0m
+    [32m✓[0m Pthreads: 0.001511s
+[36mTiến độ: 60/60[0m
+[34m  Đang test: Pthreads - Kích thước: 50000, Luồng: 1[0m
+    [32m✓[0m Pthreads: 0.160215s
+[36mTiến độ: 61/61[0m
+[34m  Đang test: Pthreads - Kích thước: 50000, Luồng: 3[0m
+    [32m✓[0m Pthreads: 0.019866s
+[36mTiến độ: 62/62[0m
+[34m  Đang test: Pthreads - Kích thước: 50000, Luồng: 5[0m
+    [32m✓[0m Pthreads: 0.011808s
+[36mTiến độ: 63/63[0m
+[34m  Đang test: Pthreads - Kích thước: 50000, Luồng: 7[0m
+    [32m✓[0m Pthreads: 0.006514s
+[36mTiến độ: 64/64[0m
+[34m  Đang test: Pthreads - Kích thước: 50000, Luồng: 9[0m
+    [32m✓[0m Pthreads: 0.004492s
+[36mTiến độ: 65/65[0m
+[34m  Đang test: Pthreads - Kích thước: 50000, Luồng: 11[0m
+    [32m✓[0m Pthreads: 0.003875s
+[36mTiến độ: 66/66[0m
+[34m  Đang test: Pthreads - Kích thước: 100000, Luồng: 1[0m
+    [32m✓[0m Pthreads: 0.638627s
+[36mTiến độ: 67/67[0m
+[34m  Đang test: Pthreads - Kích thước: 100000, Luồng: 3[0m
+    [32m✓[0m Pthreads: 0.077576s
+[36mTiến độ: 68/68[0m
+[34m  Đang test: Pthreads - Kích thước: 100000, Luồng: 5[0m
+    [32m✓[0m Pthreads: 0.037789s
+[36mTiến độ: 69/69[0m
+[34m  Đang test: Pthreads - Kích thước: 100000, Luồng: 7[0m
+    [32m✓[0m Pthreads: 0.023166s
+[36mTiến độ: 70/70[0m
+[34m  Đang test: Pthreads - Kích thước: 100000, Luồng: 9[0m
+    [32m✓[0m Pthreads: 0.016988s
+[36mTiến độ: 71/71[0m
+[34m  Đang test: Pthreads - Kích thước: 100000, Luồng: 11[0m
+    [32m✓[0m Pthreads: 0.013283s
+[36mTiến độ: 72/72[0m
+
+[35m=== BENCHMARK MPI ===[0m
+[33m  Đang test: MPI - Kích thước: 1000, Tiến trình: 1[0m
+    [32m✓[0m MPI: 0.000072s
+[33m  Đang test: MPI - Kích thước: 1000, Tiến trình: 3[0m
+    [32m✓[0m MPI: 0.000098s
+[33m  Đang test: MPI - Kích thước: 1000, Tiến trình: 5[0m
+    [32m✓[0m MPI: 0.000116s
+[33m  Đang test: MPI - Kích thước: 1000, Tiến trình: 7[0m
+    [32m✓[0m MPI: 0.000128s
+[33m  Đang test: MPI - Kích thước: 1000, Tiến trình: 9[0m
+    [32m✓[0m MPI: 0.000147s
+[33m  Đang test: MPI - Kích thước: 1000, Tiến trình: 11[0m
+    [33m⚠️  Sử dụng oversubscribe cho 11 > 10 cores[0m
+    [32m✓[0m MPI: 0.000129s
+[33m  Đang test: MPI - Kích thước: 5000, Tiến trình: 1[0m
+    [32m✓[0m MPI: 0.001618s
+[33m  Đang test: MPI - Kích thước: 5000, Tiến trình: 3[0m
+    [32m✓[0m MPI: 0.000257s
+[33m  Đang test: MPI - Kích thước: 5000, Tiến trình: 5[0m
+    [32m✓[0m MPI: 0.000279s
+[33m  Đang test: MPI - Kích thước: 5000, Tiến trình: 7[0m
+    [32m✓[0m MPI: 0.000190s
+[33m  Đang test: MPI - Kích thước: 5000, Tiến trình: 9[0m
+    [32m✓[0m MPI: 0.000158s
+[33m  Đang test: MPI - Kích thước: 5000, Tiến trình: 11[0m
+    [33m⚠️  Sử dụng oversubscribe cho 11 > 10 cores[0m
+    [32m✓[0m MPI: 0.000215s
+[33m  Đang test: MPI - Kích thước: 10000, Tiến trình: 1[0m
+    [32m✓[0m MPI: 0.006497s
+[33m  Đang test: MPI - Kích thước: 10000, Tiến trình: 3[0m
+    [32m✓[0m MPI: 0.000802s
+[33m  Đang test: MPI - Kích thước: 10000, Tiến trình: 5[0m
+    [32m✓[0m MPI: 0.000747s
+[33m  Đang test: MPI - Kích thước: 10000, Tiến trình: 7[0m
+    [32m✓[0m MPI: 0.000436s
+[33m  Đang test: MPI - Kích thước: 10000, Tiến trình: 9[0m
+    [32m✓[0m MPI: 0.000819s
+[33m  Đang test: MPI - Kích thước: 10000, Tiến trình: 11[0m
+    [33m⚠️  Sử dụng oversubscribe cho 11 > 10 cores[0m
+    [32m✓[0m MPI: 0.000369s
+[33m  Đang test: MPI - Kích thước: 30000, Tiến trình: 1[0m
+    [32m✓[0m MPI: 0.058352s
+[33m  Đang test: MPI - Kích thước: 30000, Tiến trình: 3[0m
+    [32m✓[0m MPI: 0.007331s
+[33m  Đang test: MPI - Kích thước: 30000, Tiến trình: 5[0m
+    [32m✓[0m MPI: 0.005803s
+[33m  Đang test: MPI - Kích thước: 30000, Tiến trình: 7[0m
+    [32m✓[0m MPI: 0.003184s
+[33m  Đang test: MPI - Kích thước: 30000, Tiến trình: 9[0m
+    [32m✓[0m MPI: 0.003684s
+[33m  Đang test: MPI - Kích thước: 30000, Tiến trình: 11[0m
+    [33m⚠️  Sử dụng oversubscribe cho 11 > 10 cores[0m
+    [32m✓[0m MPI: 0.002049s
+[33m  Đang test: MPI - Kích thước: 50000, Tiến trình: 1[0m
+    [32m✓[0m MPI: 0.159687s
+[33m  Đang test: MPI - Kích thước: 50000, Tiến trình: 3[0m
+    [32m✓[0m MPI: 0.020526s
+[33m  Đang test: MPI - Kích thước: 50000, Tiến trình: 5[0m
+    [32m✓[0m MPI: 0.013359s
+[33m  Đang test: MPI - Kích thước: 50000, Tiến trình: 7[0m
+    [32m✓[0m MPI: 0.008373s
+[33m  Đang test: MPI - Kích thước: 50000, Tiến trình: 9[0m
+    [32m✓[0m MPI: 0.008352s
+[33m  Đang test: MPI - Kích thước: 50000, Tiến trình: 11[0m
+    [33m⚠️  Sử dụng oversubscribe cho 11 > 10 cores[0m
+    [32m✓[0m MPI: 0.005015s
+[33m  Đang test: MPI - Kích thước: 100000, Tiến trình: 1[0m
+    [32m✓[0m MPI: 0.640743s
+[33m  Đang test: MPI - Kích thước: 100000, Tiến trình: 3[0m
+    [32m✓[0m MPI: 0.078677s
+[33m  Đang test: MPI - Kích thước: 100000, Tiến trình: 5[0m
+    [32m✓[0m MPI: 0.043904s
+[33m  Đang test: MPI - Kích thước: 100000, Tiến trình: 7[0m
+    [32m✓[0m MPI: 0.027389s
+[33m  Đang test: MPI - Kích thước: 100000, Tiến trình: 9[0m
+    [32m✓[0m MPI: 0.022428s
+[33m  Đang test: MPI - Kích thước: 100000, Tiến trình: 11[0m
+    [33m⚠️  Sử dụng oversubscribe cho 11 > 10 cores[0m
+    [32m✓[0m MPI: 0.017331s
+
+[35m╔══════════════════════════════════════════════════════╗[0m
+[35m║                 KẾT QUẢ TỔNG HỢP                    ║[0m
+[35m╚══════════════════════════════════════════════════════╝[0m
+
+[36m📊 KẾT QUẢ THỜI GIAN CHI TIẾT (giây)[0m
+
+[33m🔥 Kết Quả Kết Hợp (Count = Luồng cho OpenMP/Pthreads, Tiến trình cho MPI):[0m
+Kích Thước | Số Lượng | OpenMP       | Pthreads     | MPI         
+---------------------------------------------------------------
+1000       | 1        | 0.000073     | 0.000073     | 0.000072    
+1000       | 3        | 0.000272     | 0.000046     | 0.000098    
+1000       | 5        | 0.000034     | 0.000066     | 0.000116    
+1000       | 7        | 0.000043     | 0.000105     | 0.000128    
+1000       | 9        | 0.000051     | 0.000091     | 0.000147    
+1000       | 11       | 0.000060     | 0.000078     | 0.000129    
+---------------------------------------------------------------
+5000       | 1        | 0.001643     | 0.001679     | 0.001618    
+5000       | 3        | 0.000410     | 0.000246     | 0.000257    
+5000       | 5        | 0.000172     | 0.000200     | 0.000279    
+5000       | 7        | 0.000147     | 0.000187     | 0.000190    
+5000       | 9        | 0.000125     | 0.000171     | 0.000158    
+5000       | 11       | 0.000130     | 0.000357     | 0.000215    
+---------------------------------------------------------------
+10000      | 1        | 0.006408     | 0.006415     | 0.006497    
+10000      | 3        | 0.000921     | 0.000875     | 0.000802    
+10000      | 5        | 0.000538     | 0.000531     | 0.000747    
+10000      | 7        | 0.000414     | 0.000429     | 0.000436    
+10000      | 9        | 0.000300     | 0.000333     | 0.000819    
+10000      | 11       | 0.000281     | 0.000293     | 0.000369    
+---------------------------------------------------------------
+30000      | 1        | 0.057380     | 0.057387     | 0.058352    
+30000      | 3        | 0.007282     | 0.006907     | 0.007331    
+30000      | 5        | 0.003974     | 0.004019     | 0.005803    
+30000      | 7        | 0.002541     | 0.002654     | 0.003184    
+30000      | 9        | 0.001811     | 0.001741     | 0.003684    
+30000      | 11       | 0.001435     | 0.001511     | 0.002049    
+---------------------------------------------------------------
+50000      | 1        | 0.160181     | 0.160215     | 0.159687    
+50000      | 3        | 0.020048     | 0.019866     | 0.020526    
+50000      | 5        | 0.010641     | 0.011808     | 0.013359    
+50000      | 7        | 0.006570     | 0.006514     | 0.008373    
+50000      | 9        | 0.004486     | 0.004492     | 0.008352    
+50000      | 11       | 0.003722     | 0.003875     | 0.005015    
+---------------------------------------------------------------
+100000     | 1        | 0.640471     | 0.638627     | 0.640743    
+100000     | 3        | 0.078983     | 0.077576     | 0.078677    
+100000     | 5        | 0.037460     | 0.037789     | 0.043904    
+100000     | 7        | 0.023791     | 0.023166     | 0.027389    
+100000     | 9        | 0.015819     | 0.016988     | 0.022428    
+100000     | 11       | 0.012905     | 0.013283     | 0.017331    
+---------------------------------------------------------------
+
+[36m📈 TÓM TẮT HIỆU SUẤT[0m
+
+[33mHiệu Suất Tốt Nhất Theo Kích Thước Mảng:[0m
+
+[32mKích Thước Mảng: 1000 phần tử[0m
+  🚀 OpenMP tốt nhất:   0.000034s (5 luồng)
+  🧵 Pthreads tốt nhất: 0.000046s (3 luồng)
+  🌐 MPI tốt nhất:      0.000072s (1 tiến trình)
+  [32m→ Lựa chọn tốt nhất: OpenMP (0.000034s (5 luồng))[0m
+
+[32mKích Thước Mảng: 5000 phần tử[0m
+  🚀 OpenMP tốt nhất:   0.000125s (9 luồng)
+  🧵 Pthreads tốt nhất: 0.000171s (9 luồng)
+  🌐 MPI tốt nhất:      0.000158s (9 tiến trình)
+  [32m→ Lựa chọn tốt nhất: OpenMP (0.000125s (9 luồng))[0m
+
+[32mKích Thước Mảng: 10000 phần tử[0m
+  🚀 OpenMP tốt nhất:   0.000281s (11 luồng)
+  🧵 Pthreads tốt nhất: 0.000293s (11 luồng)
+  🌐 MPI tốt nhất:      0.000369s (11 tiến trình)
+  [32m→ Lựa chọn tốt nhất: OpenMP (0.000281s (11 luồng))[0m
+
+[32mKích Thước Mảng: 30000 phần tử[0m
+  🚀 OpenMP tốt nhất:   0.001435s (11 luồng)
+  🧵 Pthreads tốt nhất: 0.001511s (11 luồng)
+  🌐 MPI tốt nhất:      0.002049s (11 tiến trình)
+  [32m→ Lựa chọn tốt nhất: OpenMP (0.001435s (11 luồng))[0m
+
+[32mKích Thước Mảng: 50000 phần tử[0m
+  🚀 OpenMP tốt nhất:   0.003722s (11 luồng)
+  🧵 Pthreads tốt nhất: 0.003875s (11 luồng)
+  🌐 MPI tốt nhất:      0.005015s (11 tiến trình)
+  [32m→ Lựa chọn tốt nhất: OpenMP (0.003722s (11 luồng))[0m
+
+[32mKích Thước Mảng: 100000 phần tử[0m
+  🚀 OpenMP tốt nhất:   0.012905s (11 luồng)
+  🧵 Pthreads tốt nhất: 0.013283s (11 luồng)
+  🌐 MPI tốt nhất:      0.017331s (11 tiến trình)
+  [32m→ Lựa chọn tốt nhất: OpenMP (0.012905s (11 luồng))[0m
+
+[35m🏆 NHẤT TOÀN DIỆN[0m
+[32m🥇 OPENMP: 0.000034s[0m
+[32m   Kích thước: 1000, Luồng: 5[0m
+
+[36m📋 Test hoàn thành! Kết quả đã lưu ở trên.[0m
+[32m💾 Kết quả đã được tự động lưu vào: benchmark/ket_qua_benchmark-v3.txt[0m
+[33m💡 Để xem kết quả: cat benchmark/ket_qua_benchmark-v3.txt[0m
+[33m📊 Thư mục benchmark: ls -la benchmark/[0m

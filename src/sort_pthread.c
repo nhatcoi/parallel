@@ -169,7 +169,7 @@ void parallelInsertionSortPthreads(int a[], int n, int num_threads, int ascendin
     for (int i = 0; i < num_threads; i++) {
         int result = pthread_create(&threads[i], NULL, pthread_sort_chunk, &thread_data[i]);
         if (result != 0) {
-            printf(RED "Error creating thread %d: %d\n" RESET, i, result);
+            printf(RED "Lỗi tạo luồng %d: %d\n" RESET, i, result);
             exit(1);
         }
     }
@@ -178,7 +178,7 @@ void parallelInsertionSortPthreads(int a[], int n, int num_threads, int ascendin
     for (int i = 0; i < num_threads; i++) {
         int result = pthread_join(threads[i], NULL);
         if (result != 0) {
-            printf(RED "Error joining thread %d: %d\n" RESET, i, result);
+            printf(RED "Lỗi join luồng %d: %d\n" RESET, i, result);
             exit(1);
         }
     }

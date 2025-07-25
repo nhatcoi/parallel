@@ -95,7 +95,7 @@ void merge_mpi_chunks(int arr[], int* chunk_sizes, int num_procs, int total_size
         // Kiểm tra an toàn để ngăn vòng lặp vô hạn
         iteration++;
         if (iteration > MAX_ITERATIONS) {
-            printf(RED "Warning: MPI merge exceeded maximum iterations, breaking\n" RESET);
+            printf(RED "Cảnh báo: MPI merge vượt quá số lần lặp tối đa, thoát\n" RESET);
             break;
         }
         
@@ -113,7 +113,7 @@ void merge_mpi_chunks(int arr[], int* chunk_sizes, int num_procs, int total_size
                 
                 // Kiểm tra an toàn cho chỉ số hợp lệ
                 if (left < 0 || mid >= total_size || right >= total_size || mid < left || right < mid) {
-                    printf(RED "Warning: Invalid merge indices detected, skipping\n" RESET);
+                    printf(RED "Cảnh báo: Phát hiện chỉ số merge không hợp lệ, bỏ qua\n" RESET);
                     continue;
                 }
                 
@@ -131,7 +131,7 @@ void merge_mpi_chunks(int arr[], int* chunk_sizes, int num_procs, int total_size
         
         // Kiểm tra an toàn: đảm bảo có tiến bộ TRƯỚC khi cập nhật active_chunks
         if (new_active >= active_chunks && active_chunks > 1) {
-            printf(RED "Warning: MPI merge not making progress, breaking\n" RESET);
+            printf(RED "Cảnh báo: MPI merge không có tiến bộ, thoát\n" RESET);
             break;
         }
         
@@ -189,7 +189,7 @@ void parallelInsertionSortMPI(int a[], int n, int ascending) {
     // Cấp phát mảng cục bộ
     int* local_array = (int*)malloc(local_chunk_size * sizeof(int));
     if (local_array == NULL) {
-        printf(RED "Error: Failed to allocate memory for local array on rank %d\n" RESET, rank);
+        printf(RED "Lỗi: Thất bại cấp phát bộ nhớ cho mảng cục bộ tại rank %d\n" RESET, rank);
         MPI_Abort(MPI_COMM_WORLD, 1);
     }
     
@@ -240,7 +240,7 @@ int initializeMPI(int argc, char* argv[]) {
     int result = MPI_Init_thread(&argc, &argv, MPI_THREAD_SINGLE, &provided);
     
     if (result != MPI_SUCCESS) {
-        printf(RED "Error initializing MPI\n" RESET);
+        printf(RED "Lỗi khởi tạo MPI\n" RESET);
         return -1;
     }
     
@@ -280,30 +280,30 @@ int isMPIInitialized(void) {
 
 // Stub implementations when MPI is not available
 void parallelInsertionSortMPIAsc(int a[], int n) {
-    printf(RED "MPI not available - falling back to sequential sort\n" RESET);
+    printf(RED "MPI không khả dụng - chuyển sang sắp xếp tuần tự\n" RESET);
     insertionSortAsc(a, n);
 }
 
 void parallelInsertionSortMPIDesc(int a[], int n) {
-    printf(RED "MPI not available - falling back to sequential sort\n" RESET);
+    printf(RED "MPI không khả dụng - chuyển sang sắp xếp tuần tự\n" RESET);
     insertionSortDesc(a, n);
 }
 
 // Demonstration and benchmark stub functions moved to ogt_ui.c
 
 int initializeMPI(int argc, char* argv[]) {
-    printf(RED "MPI initialization not available - MPI not compiled\n" RESET);
+    printf(RED "Khởi tạo MPI không khả dụng - MPI chưa được biên dịch\n" RESET);
     return -1;
 }
 
 void finalizeMPI(void) {
-    printf(RED "MPI finalization not available - MPI not compiled\n" RESET);
+    printf(RED "Kết thúc MPI không khả dụng - MPI chưa được biên dịch\n" RESET);
 }
 
 void getMPIInfo(int* rank, int* size) {
     *rank = 0;
     *size = 1;
-    printf(RED "MPI info not available - MPI not compiled\n" RESET);
+    printf(RED "Thông tin MPI không khả dụng - MPI chưa được biên dịch\n" RESET);
 }
 
 int isMPIInitialized(void) {
