@@ -12,7 +12,7 @@ BLUE := \033[34m
 CYAN := \033[36m
 RESET := \033[0m
 
-.PHONY: all clean run help test-seq test-openmp test-pthread test-all benchmark info
+.PHONY: all clean run help test-seq test-openmp test-pthread test-all benchmark benchmark-all info
 .PHONY: mpi-1 mpi-2 mpi-3 mpi-4 mpi-5 mpi-6 mpi-7 mpi-8 mpi-9 mpi-10 mpi-11 mpi-12 mpi-16 mpi-32
 .PHONY: rebuild quick full-test mpi-test mpi-benchmark status
 
@@ -59,11 +59,16 @@ info: build
 	@echo "$(BLUE)ℹ️  Showing system information...$(RESET)"
 	@cd $(BUILD_DIR) && $(MAKE) info
 
-# MPI commands - Template
+# MPI commands - Template with oversubscription support
 define MPI_TARGET_TEMPLATE
 mpi-$(1): build
 	@echo "$(GREEN)🌐 Running with $(1) MPI processes...$(RESET)"
-	@cd $(BUILD_DIR) && mpirun -np $(1) ./$(PROJECT_NAME)
+	@if [ $(1) -gt 10 ]; then \
+		echo "$(YELLOW)⚠️  Using oversubscription for $(1) > 10 cores$(RESET)"; \
+		cd $(BUILD_DIR) && mpirun --oversubscribe -np $(1) ./$(PROJECT_NAME); \
+	else \
+		cd $(BUILD_DIR) && mpirun -np $(1) ./$(PROJECT_NAME); \
+	fi
 endef
 
 # Generate MPI targets
@@ -72,18 +77,33 @@ $(foreach N,1 2 3 4 5 6 7 8 9 10 11 12 16 32,$(eval $(call MPI_TARGET_TEMPLATE,$
 # MPI tests
 mpi-test: build
 	@echo "$(YELLOW)🧪 Testing MPI with different process counts...$(RESET)"
-	@for np in 1 2 4 8; do \
+	@for np in 1 2 4 8 11 12; do \
 		echo "$(CYAN)Testing with $$np processes:$(RESET)"; \
-		cd $(BUILD_DIR) && echo "5\\n0" | mpirun -np $$np ./$(PROJECT_NAME); \
+		if [ $$np -gt 10 ]; then \
+			echo "$(YELLOW)⚠️  Using oversubscription for $$np > 10 cores$(RESET)"; \
+			cd $(BUILD_DIR) && echo "5\\n0" | mpirun --oversubscribe -np $$np ./$(PROJECT_NAME); \
+		else \
+			cd $(BUILD_DIR) && echo "5\\n0" | mpirun -np $$np ./$(PROJECT_NAME); \
+		fi; \
 	done
 
 mpi-benchmark: build
 	@echo "$(YELLOW)📊 MPI Benchmark...$(RESET)"
-	@for np in 1 2 4 6 8; do \
+	@for np in 1 2 4 6 8 11 12; do \
 		echo "$(CYAN)Benchmarking with $$np processes:$(RESET)"; \
-		cd $(BUILD_DIR) && echo "4\\n2\\n50000\\n0" | mpirun -np $$np ./$(PROJECT_NAME); \
+		if [ $$np -gt 10 ]; then \
+			echo "$(YELLOW)⚠️  Using oversubscription for $$np > 10 cores$(RESET)"; \
+			cd $(BUILD_DIR) && echo "4\\n2\\n50000\\n0" | mpirun --oversubscribe -np $$np ./$(PROJECT_NAME); \
+		else \
+			cd $(BUILD_DIR) && echo "4\\n2\\n50000\\n0" | mpirun -np $$np ./$(PROJECT_NAME); \
+		fi; \
 		echo ""; \
 	done
+
+# Comprehensive benchmark
+benchmark-all: build
+	@echo "$(MAGENTA)🔥 Running comprehensive benchmark suite...$(RESET)"
+	@./benchmark_all.sh
 
 # Utility commands
 clean:
@@ -116,6 +136,7 @@ help:
 	@echo "  make test-pthread  - Test Pthreads sorting"
 	@echo "  make test-all      - Comprehensive comparison test"
 	@echo "  make benchmark     - OpenMP benchmark"
+	@echo "  make benchmark-all - Comprehensive benchmark suite (all methods)"
 	@echo "  make info          - Show system information"
 	@echo ""
 	@echo "$(YELLOW)MPI Commands:$(RESET)"

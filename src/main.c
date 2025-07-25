@@ -4,18 +4,18 @@
 #include "sort_ogt.h"
 
 int main(int argc, char* argv[]) {
-    // Initialize MPI if available and running with mpirun
+    // Khởi tạo MPI nếu có và chạy với mpirun
 #ifdef HAVE_MPI
     int mpi_init_result = initializeMPI(argc, argv);
     if (mpi_init_result != 0) {
-        printf("Warning: MPI initialization failed, continuing without MPI\n");
+        printf("Cảnh báo: Khởi tạo MPI thất bại, tiếp tục không dùng MPI\n");
     }
 #endif
 
-    // Run the main test interface
+    // Chạy trình test chính
     overallTestOGT();
 
-    // Finalize MPI if it was initialized
+    // Đóng MPI nếu đã khởi tạo
 #ifdef HAVE_MPI
     finalizeMPI();
 #endif

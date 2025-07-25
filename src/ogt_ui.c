@@ -24,8 +24,22 @@ static int getThreadCountInput(void) {
     int threads;
     int max_threads = omp_get_max_threads();
     
-    printf("\n" CYAN "📏 Nhập số luồng (1-%d): " RESET, max_threads);
+    // Hiển thị thông tin MPI nếu có
+#ifdef HAVE_MPI
+    int rank = 0, size = 1;
+    if (isMPIInitialized()) {
+        getMPIInfo(&rank, &size);
+        printf("\n" CYAN "📏 Số tiến trình MPI hiện tại: %d" RESET "\n", size);
+    }
+#endif
+    
+    printf("\n" CYAN "📏 Nhập số luồng cho OpenMP và Pthreads (1-%d): " RESET, max_threads);
+    fflush(stdout);  // Force flush buffer để hiển thị prompt
     scanf("%d", &threads);
+    
+    // Clear input buffer sau khi đọc để tránh ảnh hưởng lần sau
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
     
     // Xác thực đầu vào
     if (threads < 1) {
@@ -47,7 +61,12 @@ static int getArraySizeInput(void) {
     const int MAX_SIZE = 1000000;
     
     printf("\n" CYAN "📏 Nhập số phần tử mảng (%d-%d): " RESET, MIN_SIZE, MAX_SIZE);
+    fflush(stdout);  // Force flush buffer để hiển thị prompt
     scanf("%d", &array_size);
+    
+    // Clear input buffer sau khi đọc để tránh ảnh hưởng lần sau
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
     
     // Xác thực đầu vào
     if (array_size < MIN_SIZE) {
@@ -71,26 +90,26 @@ void printBenchmarkResults(const char* sort_type, int array_size, int threads, d
 // In thông tin thư viện
 void printLibraryInfo(void) {
     printf("\n" MAGENTA "╔══════════════════════════════════════════════════════╗\n");
-    printf("║                   SORT OGT LIBRARY                   ║\n");
-    printf("║              Parallel Insertion Sort                 ║\n");
-    printf("║                   Version: %-8s                  ║\n", SORT_OGT_VERSION);
-    printf("║                   Author: %-9s                  ║\n", SORT_OGT_AUTHOR);
+    printf("║                   THƯ VIỆN SORT OGT                  ║\n");
+    printf("║                Sắp Xếp Chèn Song Song                ║\n");
+    printf("║                   Phiên bản: %-8s                ║\n", SORT_OGT_VERSION);
+    printf("║                   Tác giả: %-9s                 ║\n", SORT_OGT_AUTHOR);
     printf("╚══════════════════════════════════════════════════════╝" RESET "\n");
 }
 
 // In thông tin hệ thống
 void printSystemInformation(void) {
-    printf("\n" YELLOW "=== SYSTEM INFORMATION ===" RESET "\n");
-    printf("Maximum threads available: %d\n", omp_get_max_threads());
-    printf("Number of processors: %d\n", omp_get_num_procs());
-    printf("OpenMP version: %d\n", _OPENMP);
-    printf("Library version: %s\n", SORT_OGT_VERSION);
-    printf("Author: %s\n", SORT_OGT_AUTHOR);
-    printf("Test configuration:\n");
-    printf("- Array sizes: 10K, 25K, 50K, 75K, 100K elements\n");
-    printf("- Thread counts: 1, 3, 5, 7, 9, 11\n");
-    printf("- Runs per configuration: %d\n", NUM_RUNS);
-    printf("- Maximum random value: %d\n", MAX_VALUE);
+    printf("\n" YELLOW "=== THÔNG TIN HỆ THỐNG ===" RESET "\n");
+    printf("Số luồng tối đa: %d\n", omp_get_max_threads());
+    printf("Số tiến trình: %d\n", omp_get_num_procs());
+    printf("Phiên bản OpenMP: %d\n", _OPENMP);
+    printf("Phiên bản thư viện: %s\n", SORT_OGT_VERSION);
+    printf("Tác giả: %s\n", SORT_OGT_AUTHOR);
+    printf("Cấu hình Test:\n");
+    printf("- Kích thước mảng: 10K, 25K, 50K, 75K, 100K phần tử\n");
+    printf("- Số luồng: 1, 3, 5, 7, 9, 11\n");
+    printf("- Số lần chạy mỗi cấu hình: %d\n", NUM_RUNS);
+    printf("- Giá trị ngẫu nhiên tối đa: %d\n", MAX_VALUE);
     printf("\n");
 }
 
@@ -99,11 +118,11 @@ void printSystemInformation(void) {
 void runSequentialDemo(void) {
     printf("\n" GREEN "=== DEMO TUẦN TỰ (SEQUENTIAL) ===" RESET "\n");
     
-    // Sample array for demo
+    // Mẫu mảng
     int arr[] = {64, 34, 25, 12, 22, 11, 90, 88, 76, 50};
     int n = sizeof(arr) / sizeof(arr[0]);
 
-    printf("Original array: ");
+    printf("Mảng ban đầu: ");
     printArray(arr, n);
 
     // Test ascending sort
@@ -114,9 +133,9 @@ void runSequentialDemo(void) {
     insertionSortAsc(test_arr, n);
     double end_time = getCurrentTime();
     
-    printf("Sorted ascending: ");
+    printf("Sắp xếp tăng dần: ");
     printArray(test_arr, n);
-    printf("Time: %.6f seconds\n", end_time - start_time);
+    printf("Thời gian: %.6f giây\n", end_time - start_time);
 
     // Test descending sort
     copyArray(arr, test_arr, n);
@@ -124,9 +143,9 @@ void runSequentialDemo(void) {
     insertionSortDesc(test_arr, n);
     end_time = getCurrentTime();
     
-    printf("Sorted descending: ");
+    printf("Sắp xếp giảm dần: ");
     printArray(test_arr, n);
-    printf("Time: %.6f seconds\n", end_time - start_time);
+    printf("Thời gian: %.6f giây\n", end_time - start_time);
     
     free(test_arr);
 }
@@ -137,7 +156,7 @@ void runSequentialBenchmark(void) {
     int test_sizes[] = {1000, 5000, 10000, 25000, 50000};
     int num_sizes = sizeof(test_sizes) / sizeof(test_sizes[0]);
     
-    printf("%-12s | %-12s\n", "Array Size", "Avg Time (s)");
+    printf("%-12s | %-12s\n", "Kích Thước", "Thời Gian TB (s)");
     printf("------------------------\n");
     
     for (int i = 0; i < num_sizes; i++) {
@@ -170,9 +189,9 @@ void runOpenMPDemo(void) {
     int n = sizeof(arr) / sizeof(arr[0]);
     int threads = getThreadCountInput();
 
-    printf("Original array: ");
+    printf("Mảng ban đầu: ");
     printArray(arr, n);
-    printf("Using %d threads\n", threads);
+    printf("Sử dụng %d luồng\n", threads);
 
     // Test ascending sort
     int *test_arr = malloc(n * sizeof(int));
@@ -182,9 +201,9 @@ void runOpenMPDemo(void) {
     parallelInsertionSortAsc(test_arr, n, threads);
     double end_time = getCurrentTime();
     
-    printf("Sorted ascending (OpenMP): ");
+    printf("Sắp xếp tăng dần (OpenMP): ");
     printArray(test_arr, n);
-    printf("Time: %.6f seconds\n", end_time - start_time);
+    printf("Thời gian: %.6f giây\n", end_time - start_time);
     
     free(test_arr);
 }
@@ -200,10 +219,10 @@ void runOpenMPBenchmark(void) {
     int num_thread_configs = sizeof(thread_counts) / sizeof(thread_counts[0]);
     
     printf("\n" MAGENTA "🔥 BENCHMARK VỚI THREADS CỐ ĐỊNH (p=1,3,5,7,9,11)" RESET "\n");
-    printf("Array size: %d elements\n", array_size);
-    printf("Runs per configuration: %d\n\n", NUM_RUNS);
+    printf("Kích thước mảng: %d phần tử\n", array_size);
+    printf("Số lần chạy mỗi cấu hình: %d\n\n", NUM_RUNS);
     
-    printf("%-8s | %-12s | %-10s | %-12s\n", "Threads", "Avg Time (s)", "Speedup", "Efficiency");
+    printf("%-8s | %-12s | %-10s | %-12s\n", "Luồng", "Thời Gian TB (s)", "Tăng Tốc", "Hiệu Suất");
     printf("----------------------------------------------------\n");
     
     double sequential_time = 0.0;
@@ -215,7 +234,7 @@ void runOpenMPBenchmark(void) {
         for (int run = 0; run < NUM_RUNS; run++) {
             int *arr = malloc(array_size * sizeof(int));
             if (!arr) {
-                printf(RED "❌ Memory allocation failed for %d elements\n" RESET, array_size);
+                printf(RED "❌ Cấp phát bộ nhớ thất bại cho %d phần tử\n" RESET, array_size);
                 return;
             }
             
@@ -249,10 +268,10 @@ void runOpenMPBenchmark(void) {
     }
     
     printf("\n" CYAN "=== PHÂN TÍCH KẾT QUẢ ===" RESET "\n");
-    printf("✅ Sort tuần tự: %.6f s\n", sequential_time);
+    printf("✅ Sắp xếp tuần tự: %.6f s\n", sequential_time);
     printf("🎯 Các số luồng test: 1(tuần tự), 3, 5, 7, 9, 11\n");
-    printf("📊 Kích thước Array: %d elements\n", array_size);
-    printf("📈 Efficiency = (Speedup / Threads) × 100%%\n");
+    printf("📊 Kích thước mảng: %d phần tử\n", array_size);
+    printf("📈 Hiệu suất = (Tăng tốc / Số luồng) × 100%%\n");
 }
 
 // ========== 3. CÁC HÀM SẮP XẾP PTHREADS ==========
@@ -264,9 +283,9 @@ void runPthreadsDemo(void) {
     int n = sizeof(arr) / sizeof(arr[0]);
     int threads = getThreadCountInput();
 
-    printf("Original array: ");
+    printf("Mảng ban đầu: ");
     printArray(arr, n);
-    printf("Using %d threads\n", threads);
+    printf("Sử dụng %d luồng\n", threads);
 
     // Test ascending sort
     int *test_arr = malloc(n * sizeof(int));
@@ -276,9 +295,9 @@ void runPthreadsDemo(void) {
     parallelInsertionSortPthreadsAsc(test_arr, n, threads);
     double end_time = getCurrentTime();
     
-    printf("Sorted ascending (Pthreads): ");
+    printf("Sắp xếp tăng dần (Pthreads): ");
     printArray(test_arr, n);
-    printf("Time: %.6f seconds\n", end_time - start_time);
+    printf("Thời gian: %.6f giây\n", end_time - start_time);
     
     // Verify correctness
     int is_sorted = 1;
@@ -288,7 +307,7 @@ void runPthreadsDemo(void) {
             break;
         }
     }
-    printf("Correctness: %s\n", is_sorted ? "✅ PASSED" : "❌ FAILED");
+    printf("Tính đúng đắn: %s\n", is_sorted ? "✅ ĐẠT" : "❌ THẤT BẠI");
     
     free(test_arr);
 }
@@ -304,10 +323,10 @@ void runPthreadsBenchmark(void) {
     int num_thread_configs = sizeof(thread_counts) / sizeof(thread_counts[0]);
     
     printf("\n" MAGENTA "🔥 BENCHMARK VỚI THREADS CỐ ĐỊNH (p=1,3,5,7,9,11)" RESET "\n");
-    printf("Array size: %d elements\n", array_size);
-    printf("Runs per configuration: %d\n\n", NUM_RUNS);
+    printf("Kích thước mảng: %d phần tử\n", array_size);
+    printf("Số lần chạy mỗi cấu hình: %d\n\n", NUM_RUNS);
     
-    printf("%-8s | %-12s | %-10s | %-12s\n", "Threads", "Avg Time (s)", "Speedup", "Efficiency");
+    printf("%-8s | %-12s | %-10s | %-12s\n", "Luồng", "Thời Gian TB (s)", "Tăng Tốc", "Hiệu Suất");
     printf("----------------------------------------------------\n");
     
     double sequential_time = 0.0;
@@ -319,7 +338,7 @@ void runPthreadsBenchmark(void) {
         for (int run = 0; run < NUM_RUNS; run++) {
             int *arr = malloc(array_size * sizeof(int));
             if (!arr) {
-                printf(RED "❌ Memory allocation failed for %d elements\n" RESET, array_size);
+                printf(RED "❌ Cấp phát bộ nhớ thất bại cho %d phần tử\n" RESET, array_size);
                 return;
             }
             
@@ -353,10 +372,10 @@ void runPthreadsBenchmark(void) {
     }
     
     printf("\n" CYAN "=== PHÂN TÍCH KẾT QUẢ ===" RESET "\n");
-    printf("✅ Sequential baseline: %.6f seconds\n", sequential_time);
-    printf("🎯 Thread counts tested: 1(tuần tự), 3, 5, 7, 9, 11\n");
-    printf("📊 Array size: %d elements\n", array_size);
-    printf("📈 Efficiency = (Speedup / Threads) × 100%%\n");
+    printf("✅ Chuẩn tuần tự: %.6f giây\n", sequential_time);
+    printf("🎯 Số luồng đã test: 1(tuần tự), 3, 5, 7, 9, 11\n");
+    printf("📊 Kích thước mảng: %d phần tử\n", array_size);
+    printf("📈 Hiệu suất = (Tăng tốc / Số luồng) × 100%%\n");
 }
 
 // ========== 4. CÁC HÀM SẮP XẾP MPI ==========
@@ -369,14 +388,14 @@ void runMPIDemo(void) {
     getMPIInfo(&rank, &size);
     
     if (rank == 0) {
-        printf("Running MPI demo with %d processes\n", size);
+        printf("Chạy demo MPI với %d tiến trình\n", size);
     }
     
     int arr[] = {64, 34, 25, 12, 22, 11, 90, 88, 76, 50, 42, 30, 72, 17, 95, 33, 47, 61, 8, 91};
     int n = sizeof(arr) / sizeof(arr[0]);
     
     if (rank == 0) {
-        printf("Original array: ");
+        printf("Mảng ban đầu: ");
         printArray(arr, n);
     }
     
@@ -385,25 +404,25 @@ void runMPIDemo(void) {
     double end_time = getCurrentTime();
     
     if (rank == 0) {
-        printf("Sorted ascending (MPI): ");
+        printf("Sắp xếp tăng dần (MPI): ");
         printArray(arr, n);
-        printf("Time: %.6f seconds\n", end_time - start_time);
+        printf("Thời gian: %.6f giây\n", end_time - start_time);
     }
 #else
-    printf("MPI not available - showing fallback to sequential sort\n");
+    printf("MPI không khả dụng - hiển thị fallback sang sắp xếp tuần tự\n");
     int arr[] = {64, 34, 25, 12, 22, 11, 90, 88, 76, 50};
     int n = sizeof(arr) / sizeof(arr[0]);
     
-    printf("Original array: ");
+    printf("Mảng ban đầu: ");
     printArray(arr, n);
     
     double start_time = getCurrentTime();
     parallelInsertionSortMPIAsc(arr, n);  // Will fallback to sequential
     double end_time = getCurrentTime();
     
-    printf("Sorted (fallback): ");
+    printf("Đã sắp xếp (fallback): ");
     printArray(arr, n);
-    printf("Time: %.6f seconds\n", end_time - start_time);
+    printf("Thời gian: %.6f giây\n", end_time - start_time);
 #endif
 }
 
@@ -422,23 +441,15 @@ void runMPIBenchmark(void) {
     
     int array_size;
     if (rank == 0) {
-        printf("Current MPI processes: %d\n", size);
+        printf("Số tiến trình MPI hiện tại: %d\n", size);
         array_size = getArraySizeInput();
         
-        printf("\n" MAGENTA "🔥 BENCHMARK VỚI PROCESSES CỐ ĐỊNH (p=%d)" RESET "\n", size);
-        printf("Array size: %d elements\n", array_size);
-        printf("Runs per configuration: %d\n\n", NUM_RUNS);
+        printf("\n" MAGENTA "🔥 BENCHMARK VỚI TIẾN TRÌNH CỐ ĐỊNH (p=%d)" RESET "\n", size);
+        printf("Kích thước mảng: %d phần tử\n", array_size);
+        printf("Số lần chạy mỗi cấu hình: %d\n\n", NUM_RUNS);
         
-        printf("🔒 MPI Limitation: Process count is fixed at runtime (mpirun -np %d)\n", size);
-        printf("   For different process counts, restart with:\n");
-        printf("   mpirun -np 1 ./main   # Sequential (p=1)\n");
-        printf("   mpirun -np 3 ./main   # 3 processes\n");
-        printf("   mpirun -np 5 ./main   # 5 processes\n");
-        printf("   mpirun -np 7 ./main   # 7 processes\n");
-        printf("   mpirun -np 9 ./main   # 9 processes\n");
-        printf("   mpirun -np 11 ./main  # 11 processes\n\n");
         
-        printf("%-10s | %-12s | %-10s | %-12s\n", "Processes", "Avg Time (s)", "Speedup", "Efficiency");
+        printf("%-10s | %-12s | %-10s | %-12s\n", "Tiến Trình", "Thời Gian TB (s)", "Tăng Tốc", "Hiệu Suất");
         printf("-------------------------------------------------------\n");
     }
     
@@ -496,153 +507,217 @@ void runMPIBenchmark(void) {
                size, avg_mpi_time, speedup, efficiency);
         
         printf("\n" CYAN "=== PHÂN TÍCH KẾT QUẢ ===" RESET "\n");
-        printf("✅ Sequential baseline: %.6f seconds\n", sequential_time);
-        printf("🎯 Current process count: %d\n", size);
-        printf("📊 Array size: %d elements\n", array_size);
-        printf("📈 Efficiency = (Speedup / Processes) × 100%%\n");
+        printf("✅ Chuẩn tuần tự: %.6f giây\n", sequential_time);
+        printf("🚀 MPI (%d processes): %.6f giây\n", size, avg_mpi_time);
+        printf("⚡ Tăng tốc: %.2fx\n", speedup);
+        printf("🎯 Số process hiện tại: %d\n", size);
+        printf("📊 Kích thước mảng: %d phần tử\n", array_size);
+        printf("📈 Hiệu suất = (Tăng tốc / Số tiến trình) × 100%%\n");
         
         if (efficiency > 100.0) {
-            printf("🚀 Superlinear speedup detected! (cache effects or algorithmic benefits)\n");
+            printf("🚀 Phát hiện tăng tốc siêu tuyến tính! (hiệu ứng cache hoặc lợi ích thuật toán)\n");
         } else if (efficiency > 70.0) {
-            printf("✅ Good parallel efficiency\n");
+            printf("✅ Hiệu suất song song tốt\n");
         } else {
-            printf("⚠️  Low efficiency - consider communication overhead\n");
+            printf("⚠️  Hiệu suất thấp - xem xét overhead giao tiếp\n");
         }
         
-        printf("\n💡 To test with p=1,3,5,7,9,11, run these commands:\n");
-        printf("   mpirun -np 1 ./main && mpirun -np 3 ./main && \\\n");
-        printf("   mpirun -np 5 ./main && mpirun -np 7 ./main && \\\n");
-        printf("   mpirun -np 9 ./main && mpirun -np 11 ./main\n");
     }
     
 #else
     printf("\n" YELLOW "=== BENCHMARK MPI ===" RESET "\n");
-    printf("MPI not available - cannot run MPI benchmark\n");
-    printf("This would show comparison between MPI and sequential sorting\n");
+    printf("MPI không khả dụng - không thể chạy benchmark MPI\n");
+    printf("Điều này sẽ hiển thị so sánh giữa MPI và sắp xếp tuần tự\n");
 #endif
 }
 
 // ========== 5. HÀM SO SÁNH ==========
 
 void runAllComparison(void) {
-    printf("\n" MAGENTA "=== SO SÁNH TẤT CẢ 4 KIỂU SORT ===" RESET "\n");
+    // MPI info
+    int rank = 0, size = 1;
+#ifdef HAVE_MPI
+    if (isMPIInitialized()) {
+        getMPIInfo(&rank, &size);
+    }
+#endif
     
-    int array_size = 25000;  // Medium size for fair comparison
-    int threads = 5;         // Reasonable thread count
+    int array_size, threads;
     
-    printf("Array size: %d elements\n", array_size);
-    printf("Threads (for parallel methods): %d\n", threads);
-    printf("Runs per method: %d\n\n", NUM_RUNS);
+    // Only rank 0 gets user input
+    if (rank == 0) {
+        printf("\n" MAGENTA "=== SO SÁNH TẤT CẢ 4 KIỂU SORT ===" RESET "\n");
+        
+        // Get array size from user
+        array_size = getArraySizeInput();
+        
+        // Get thread count from user  
+        threads = getThreadCountInput();
+        
+        printf("\n" CYAN "🔄 Bắt đầu so sánh với các thông số:" RESET "\n");
+        printf("Kích thước mảng: %d phần tử\n", array_size);
+        printf("Số luồng (cho phương pháp song song): %d\n", threads);
+        printf("Số lần chạy mỗi phương pháp: %d\n\n", NUM_RUNS);
+        printf("%-15s | %-12s | %-10s\n", "Phương Pháp", "Thời Gian TB (s)", "Tăng Tốc");
+        printf("------------------------------------------\n");
+    }
     
-    // Generate test data
-    int *original = malloc(array_size * sizeof(int));
-    generateRandomArray(original, array_size, MAX_VALUE);
-    
-    printf("%-15s | %-12s | %-10s\n", "Method", "Avg Time (s)", "Speedup");
-    printf("------------------------------------------\n");
+#ifdef HAVE_MPI
+    // Broadcast user input to all MPI processes
+    if (isMPIInitialized()) {
+        MPI_Bcast(&array_size, 1, MPI_INT, 0, MPI_COMM_WORLD);
+        MPI_Bcast(&threads, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    }
+#endif
     
     double times[4] = {0, 0, 0, 0};
-    const char* methods[] = {"Sequential", "OpenMP", "Pthreads", "MPI"};
+    const char* methods[] = {"Tuần Tự", "OpenMP", "Pthreads", "MPI"};
     
-    // 1. Sequential
-    for (int run = 0; run < NUM_RUNS; run++) {
-        int *arr = malloc(array_size * sizeof(int));
-        copyArray(original, arr, array_size);
+    // Only rank 0 runs sequential, OpenMP, and Pthreads tests
+    if (rank == 0) {
+        // Generate test data
+        int *original = malloc(array_size * sizeof(int));
+        generateRandomArray(original, array_size, MAX_VALUE);
         
-        double start_time = getCurrentTime();
-        insertionSortAsc(arr, array_size);
-        double end_time = getCurrentTime();
-        
-        times[0] += (end_time - start_time);
-        free(arr);
-    }
-    times[0] /= NUM_RUNS;
-    
-    // 2. OpenMP
-    for (int run = 0; run < NUM_RUNS; run++) {
-        int *arr = malloc(array_size * sizeof(int));
-        copyArray(original, arr, array_size);
-        
-        double start_time = getCurrentTime();
-        parallelInsertionSortAsc(arr, array_size, threads);
-        double end_time = getCurrentTime();
-        
-        times[1] += (end_time - start_time);
-        free(arr);
-    }
-    times[1] /= NUM_RUNS;
-    
-    // 3. Pthreads
-    for (int run = 0; run < NUM_RUNS; run++) {
-        int *arr = malloc(array_size * sizeof(int));
-        copyArray(original, arr, array_size);
-        
-        double start_time = getCurrentTime();
-        parallelInsertionSortPthreadsAsc(arr, array_size, threads);
-        double end_time = getCurrentTime();
-        
-        times[2] += (end_time - start_time);
-        free(arr);
-    }
-    times[2] /= NUM_RUNS;
-    
-    // 4. MPI
-#ifdef HAVE_MPI
-    int rank, size;
-    getMPIInfo(&rank, &size);
-    
-    for (int run = 0; run < NUM_RUNS; run++) {
-        int *arr = NULL;
-        if (rank == 0) {
-            arr = malloc(array_size * sizeof(int));
+        // 1. Sequential
+        for (int run = 0; run < NUM_RUNS; run++) {
+            int *arr = malloc(array_size * sizeof(int));
             copyArray(original, arr, array_size);
+            
+            double start_time = getCurrentTime();
+            insertionSortAsc(arr, array_size);
+            double end_time = getCurrentTime();
+            
+            times[0] += (end_time - start_time);
+            free(arr);
+        }
+        times[0] /= NUM_RUNS;
+        
+        // 2. OpenMP
+        for (int run = 0; run < NUM_RUNS; run++) {
+            int *arr = malloc(array_size * sizeof(int));
+            copyArray(original, arr, array_size);
+            
+            double start_time = getCurrentTime();
+            parallelInsertionSortAsc(arr, array_size, threads);
+            double end_time = getCurrentTime();
+            
+            times[1] += (end_time - start_time);
+            free(arr);
+        }
+        times[1] /= NUM_RUNS;
+        
+        // 3. Pthreads
+        for (int run = 0; run < NUM_RUNS; run++) {
+            int *arr = malloc(array_size * sizeof(int));
+            copyArray(original, arr, array_size);
+            
+            double start_time = getCurrentTime();
+            parallelInsertionSortPthreadsAsc(arr, array_size, threads);
+            double end_time = getCurrentTime();
+            
+            times[2] += (end_time - start_time);
+            free(arr);
+        }
+        times[2] /= NUM_RUNS;
+        
+        free(original);
+    }
+    
+    // 4. MPI - All processes participate
+#ifdef HAVE_MPI
+    if (isMPIInitialized()) {
+        // Broadcast first 3 results to all processes for consistency
+        MPI_Bcast(times, 3, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+        
+        for (int run = 0; run < NUM_RUNS; run++) {
+            int *arr = NULL;
+            if (rank == 0) {
+                arr = malloc(array_size * sizeof(int));
+                generateRandomArray(arr, array_size, MAX_VALUE);
+            }
+            
+            MPI_Barrier(MPI_COMM_WORLD);
+            double start_time = getCurrentTime();
+            parallelInsertionSortMPIAsc(arr, array_size);
+            double end_time = getCurrentTime();
+            
+            if (rank == 0) {
+                times[3] += (end_time - start_time);
+                free(arr);
+            }
         }
         
-        double start_time = getCurrentTime();
-        parallelInsertionSortMPIAsc(arr, array_size);
-        double end_time = getCurrentTime();
-        
         if (rank == 0) {
+            times[3] /= NUM_RUNS;
+        }
+    } else {
+        // Fallback timing for MPI stub (only rank 0)
+        if (rank == 0) {
+            int *original = malloc(array_size * sizeof(int));
+            generateRandomArray(original, array_size, MAX_VALUE);
+            
+            for (int run = 0; run < NUM_RUNS; run++) {
+                int *arr = malloc(array_size * sizeof(int));
+                copyArray(original, arr, array_size);
+                
+                double start_time = getCurrentTime();
+                parallelInsertionSortMPIAsc(arr, array_size);  // Will fallback
+                double end_time = getCurrentTime();
+                
+                times[3] += (end_time - start_time);
+                free(arr);
+            }
+            times[3] /= NUM_RUNS;
+            free(original);
+        }
+    }
+#else
+    // Fallback timing for MPI stub (only rank 0)
+    if (rank == 0) {
+        int *original = malloc(array_size * sizeof(int));
+        generateRandomArray(original, array_size, MAX_VALUE);
+        
+        for (int run = 0; run < NUM_RUNS; run++) {
+            int *arr = malloc(array_size * sizeof(int));
+            copyArray(original, arr, array_size);
+            
+            double start_time = getCurrentTime();
+            parallelInsertionSortMPIAsc(arr, array_size);  // Will fallback
+            double end_time = getCurrentTime();
+            
             times[3] += (end_time - start_time);
             free(arr);
         }
-    }
-    if (rank == 0) {
         times[3] /= NUM_RUNS;
+        free(original);
     }
-#else
-    // Fallback timing for MPI stub
-    for (int run = 0; run < NUM_RUNS; run++) {
-        int *arr = malloc(array_size * sizeof(int));
-        copyArray(original, arr, array_size);
-        
-        double start_time = getCurrentTime();
-        parallelInsertionSortMPIAsc(arr, array_size);  // Will fallback
-        double end_time = getCurrentTime();
-        
-        times[3] += (end_time - start_time);
-        free(arr);
-    }
-    times[3] /= NUM_RUNS;
 #endif
     
-    // Print results
-    for (int i = 0; i < 4; i++) {
-        double speedup = times[0] / times[i];  // Compare to sequential
-        printf("%-15s | %-12.6f | %-10.2f\n", methods[i], times[i], speedup);
+    // Only rank 0 prints results
+    if (rank == 0) {
+        // Print results
+        for (int i = 0; i < 4; i++) {
+            double speedup = times[0] / times[i];  // Compare to sequential
+            printf("%-15s | %-12.6f | %-10.2f\n", methods[i], times[i], speedup);
+        }
+        
+        printf("\n" CYAN "=== PHÂN TÍCH ===" RESET "\n");
+        printf("Hiệu suất tốt nhất: ");
+        int best = 0;
+        for (int i = 1; i < 4; i++) {
+            if (times[i] < times[best]) best = i;
+        }
+        printf("%s (%.6f giây)\n", methods[best], times[best]);
+        
+        printf("Tăng tốc tốt nhất: %.2fx (%s)\n", times[0] / times[best], methods[best]);
+        
+#ifdef HAVE_MPI
+        if (isMPIInitialized()) {
+            printf("💡 MPI đang chạy với %d tiến trình\n", size);
+        }
+#endif
     }
-    
-    printf("\n" CYAN "=== ANALYSIS ===" RESET "\n");
-    printf("Best performer: ");
-    int best = 0;
-    for (int i = 1; i < 4; i++) {
-        if (times[i] < times[best]) best = i;
-    }
-    printf("%s (%.6f seconds)\n", methods[best], times[best]);
-    
-    printf("Best speedup: %.2fx (%s)\n", times[0] / times[best], methods[best]);
-    
-    free(original);
 }
 
 // ========== HÀM GIAO DIỆN CHÍNH ==========
@@ -688,7 +763,7 @@ void overallTestOGT(void) {
         }
         
         // Root process continues with menu
-        printf("\n" CYAN "Running in MPI mode with %d processes" RESET "\n", size);
+        printf("\n" CYAN "Chạy trong chế độ MPI với %d tiến trình" RESET "\n", size);
     }
 #endif
     
@@ -703,7 +778,7 @@ void overallTestOGT(void) {
         if (rank == 0) {
 #endif
             printLibraryInfo();
-            printf("\n" BLUE "=== SORT OGT LIBRARY - MENU CHÍNH ===" RESET "\n");
+            printf("\n" BLUE "=== THƯ VIỆN SORT OGT - MENU CHÍNH ===" RESET "\n");
             printf("1. 🔢 Tuần Tự (Sequential)\n");
             printf("2. 🚀 OpenMP\n");
             printf("3. 🧵 Pthreads\n");
@@ -950,8 +1025,8 @@ void overallTestOGT(void) {
                 break;
                 
             case 0:
-                printf(GREEN "\n👋 Goodbye from Sort OGT Library!\n");
-                printf("Thank you for testing!" RESET "\n");
+                printf(GREEN "\n👋 Tạm biệt từ Thư viện Sort OGT!\n");
+                printf("Cảm ơn bạn đã test!" RESET "\n");
                 break;
                 
             default:
@@ -971,7 +1046,7 @@ void overallTestOGT(void) {
             if (isatty(0)) {  // Check if input is from terminal
                 getchar();
             } else {
-                printf("(Auto-continuing in non-interactive mode)\n");
+                printf("(Tự động tiếp tục trong chế độ không tương tác)\n");
             }
         }
         
@@ -1010,7 +1085,7 @@ void runInteractiveTests(void) {
 }
 
 void runSingleBenchmark(int array_size) {
-    printf("Single benchmark for array size %d:\n", array_size);
+    printf("Benchmark đơn cho kích thước mảng %d:\n", array_size);
     runOpenMPBenchmark();
 }
 
@@ -1023,7 +1098,7 @@ void demonstratePthreadsSort(void) {
 }
 
 void benchmarkPthreadsSort(int array_size, int num_threads) {
-    printf("Pthreads benchmark for array size %d with %d threads:\n", array_size, num_threads);
+    printf("Benchmark Pthreads cho kích thước mảng %d với %d luồng:\n", array_size, num_threads);
     runPthreadsBenchmark();
 }
 
@@ -1037,8 +1112,8 @@ void benchmarkMPISort(int array_size) {
     getMPIInfo(&rank, &size);
     
     if (rank == 0) {
-        printf("MPI benchmark for array size %d with %d processes:\n", array_size, size);
-        printf("%-8s | %-12s | %-10s\n", "Size", "Avg Time (s)", "Speedup");
+        printf("Benchmark MPI cho kích thước mảng %d với %d tiến trình:\n", array_size, size);
+        printf("%-8s | %-12s | %-10s\n", "Kích Thước", "Thời Gian TB (s)", "Tăng Tốc");
         printf("-----------------------------------\n");
     }
     
@@ -1087,8 +1162,8 @@ void benchmarkMPISort(int array_size) {
         printf("%-8d | %-12.6f | %-10.2f\n", array_size, avg_time, speedup);
     }
 #else
-    printf("MPI benchmark not available - MPI not compiled\n");
-    printf("Array size: %d - would show MPI vs sequential comparison\n", array_size);
+    printf("Benchmark MPI không khả dụng - MPI chưa được biên dịch\n");
+    printf("Kích thước mảng: %d - sẽ hiển thị so sánh MPI vs tuần tự\n", array_size);
 #endif
 }
 
@@ -1098,15 +1173,15 @@ void printMPISystemInfo(void) {
     getMPIInfo(&rank, &size);
     
     if (rank == 0) {
-        printf("\n" CYAN "=== MPI SYSTEM INFORMATION ===" RESET "\n");
-        printf("Number of MPI processes: %d\n", size);
+        printf("\n" CYAN "=== THÔNG TIN HỆ THỐNG MPI ===" RESET "\n");
+        printf("Số tiến trình MPI: %d\n", size);
         
         // Get MPI version
         int version, subversion;
         MPI_Get_version(&version, &subversion);
-        printf("MPI Version: %d.%d\n", version, subversion);
+        printf("Phiên bản MPI: %d.%d\n", version, subversion);
     }
 #else
-    printf(RED "MPI system info not available - MPI not compiled\n" RESET);
+    printf(RED "Thông tin hệ thống MPI không khả dụng - MPI chưa được biên dịch\n" RESET);
 #endif
 } 
