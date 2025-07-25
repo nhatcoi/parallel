@@ -19,7 +19,12 @@ static void printArray(int arr[], int size) {
     printf("\n");
 }
 
-// Hàm lấy số luồng từ người dùng với xác thực
+/**
+ * Prompts the user to enter the number of threads for OpenMP and Pthreads, validates the input, and returns the adjusted thread count.
+ *
+ * If MPI is initialized, displays the current number of MPI processes. Ensures the thread count is within the valid range (1 to maximum supported threads), adjusting and notifying the user if necessary.
+ * @return The validated number of threads to use.
+ */
 static int getThreadCountInput(void) {
     int threads;
     int max_threads = omp_get_max_threads();
@@ -54,7 +59,13 @@ static int getThreadCountInput(void) {
     return threads;
 }
 
-// Hàm lấy kích thước mảng từ người dùng với xác thực
+/**
+ * Prompts the user to enter an array size within allowed bounds and returns the validated size.
+ *
+ * Ensures the input is within the minimum and maximum allowed values, adjusting and notifying the user if necessary.
+ * The prompt and messages are displayed in Vietnamese.
+ * @return The validated array size to use.
+ */
 static int getArraySizeInput(void) {
     int array_size;
     const int MIN_SIZE = 1000;
@@ -87,7 +98,9 @@ void printBenchmarkResults(const char* sort_type, int array_size, int threads, d
            sort_type, array_size, threads, avg_time, speedup);
 }
 
-// In thông tin thư viện
+/**
+ * Prints the library name, version, and author information in a formatted banner.
+ */
 void printLibraryInfo(void) {
     printf("\n" MAGENTA "╔══════════════════════════════════════════════════════╗\n");
     printf("║                   THƯ VIỆN SORT OGT                  ║\n");
@@ -97,7 +110,9 @@ void printLibraryInfo(void) {
     printf("╚══════════════════════════════════════════════════════╝" RESET "\n");
 }
 
-// In thông tin hệ thống
+/**
+ * Prints detailed system and library configuration information, including OpenMP settings, library version, author, and benchmark parameters.
+ */
 void printSystemInformation(void) {
     printf("\n" YELLOW "=== THÔNG TIN HỆ THỐNG ===" RESET "\n");
     printf("Số luồng tối đa: %d\n", omp_get_max_threads());
@@ -113,7 +128,9 @@ void printSystemInformation(void) {
     printf("\n");
 }
 
-// ========== 1. CÁC HÀM SẮP XẾP TUẦN TỰ ==========
+/**
+ * Demonstrates sequential insertion sort in both ascending and descending order on a sample array, displaying the original and sorted arrays along with elapsed times.
+ */
 
 void runSequentialDemo(void) {
     printf("\n" GREEN "=== DEMO TUẦN TỰ (SEQUENTIAL) ===" RESET "\n");
@@ -150,6 +167,11 @@ void runSequentialDemo(void) {
     free(test_arr);
 }
 
+/**
+ * Benchmarks the sequential insertion sort algorithm on arrays of increasing sizes.
+ *
+ * Runs the insertion sort multiple times for each predefined array size, averages the execution time, and prints the results in a formatted table.
+ */
 void runSequentialBenchmark(void) {
     printf("\n" GREEN "=== BENCHMARK TUẦN TỰ (SEQUENTIAL) ===" RESET "\n");
     
@@ -180,7 +202,11 @@ void runSequentialBenchmark(void) {
     }
 }
 
-// ========== 2. CÁC HÀM SẮP XẾP OPENMP ==========
+/**
+ * Demonstrates parallel insertion sort using OpenMP on a sample array.
+ *
+ * Prompts the user for the number of threads, displays the original array, sorts it in ascending order using OpenMP parallelism, and prints the sorted array along with the elapsed time.
+ */
 
 void runOpenMPDemo(void) {
     printf("\n" CYAN "=== DEMO OPENMP ===" RESET "\n");
@@ -208,6 +234,11 @@ void runOpenMPDemo(void) {
     free(test_arr);
 }
 
+/**
+ * Benchmarks the OpenMP parallel insertion sort algorithm with various thread counts.
+ *
+ * Runs the parallel insertion sort on randomly generated arrays of a user-specified size, testing fixed thread counts (1, 3, 5, 7, 9, 11). For each configuration, the function averages the elapsed time over multiple runs, calculates speedup and efficiency relative to the sequential baseline, and prints the results in a formatted table along with a summary analysis.
+ */
 void runOpenMPBenchmark(void) {
     printf("\n" CYAN "=== BENCHMARK OPENMP ===" RESET "\n");
     
@@ -274,7 +305,11 @@ void runOpenMPBenchmark(void) {
     printf("📈 Hiệu suất = (Tăng tốc / Số luồng) × 100%%\n");
 }
 
-// ========== 3. CÁC HÀM SẮP XẾP PTHREADS ==========
+/**
+ * Demonstrates parallel insertion sort using Pthreads on a sample array.
+ *
+ * Prompts the user for the number of threads, sorts a fixed array in ascending order using Pthreads-based parallel insertion sort, prints the original and sorted arrays, displays the elapsed time, and verifies the correctness of the sort.
+ */
 
 void runPthreadsDemo(void) {
     printf("\n" BLUE "=== DEMO PTHREADS ===" RESET "\n");
@@ -312,6 +347,11 @@ void runPthreadsDemo(void) {
     free(test_arr);
 }
 
+/**
+ * Benchmarks the performance of the Pthreads-based parallel insertion sort across multiple thread counts.
+ *
+ * Runs the parallel insertion sort on randomly generated arrays of a user-specified size, using fixed thread counts (1, 3, 5, 7, 9, 11). For each configuration, the function measures and averages the execution time over a fixed number of runs, then calculates and displays the speedup and efficiency relative to the sequential baseline.
+ */
 void runPthreadsBenchmark(void) {
     printf("\n" BLUE "=== BENCHMARK PTHREADS ===" RESET "\n");
     
@@ -378,7 +418,11 @@ void runPthreadsBenchmark(void) {
     printf("📈 Hiệu suất = (Tăng tốc / Số luồng) × 100%%\n");
 }
 
-// ========== 4. CÁC HÀM SẮP XẾP MPI ==========
+/**
+ * Demonstrates parallel insertion sort using MPI on a sample array.
+ *
+ * If MPI is enabled, runs the sort across all MPI processes and displays the initial and sorted arrays with timing on the root process. If MPI is not available, falls back to sequential sorting and displays the results.
+ */
 
 void runMPIDemo(void) {
     printf("\n" YELLOW "=== DEMO MPI ===" RESET "\n");
@@ -430,6 +474,11 @@ void runComprehensiveMPITest(void) {
     runMPIBenchmark();
 }
 
+/**
+ * Benchmarks the performance of parallel insertion sort using MPI across all available processes.
+ *
+ * On the root process (rank 0), measures and prints the average execution time, speedup, and efficiency of MPI-based sorting compared to sequential sorting for a user-specified array size. All MPI processes participate in the benchmark runs. Results and performance analysis are displayed only by the root process. If MPI is not available, prints a message indicating that MPI benchmarking is unavailable.
+ */
 void runMPIBenchmark(void) {
 #ifdef HAVE_MPI
     int rank, size;
@@ -531,7 +580,11 @@ void runMPIBenchmark(void) {
 #endif
 }
 
-// ========== 5. HÀM SO SÁNH ==========
+/**
+ * Compares the performance of four sorting methods—sequential, OpenMP, Pthreads, and MPI—by benchmarking each on the same randomly generated arrays.
+ *
+ * Prompts the user (on rank 0) for array size and thread count, then runs each sorting method multiple times to compute average execution times and speedups relative to the sequential baseline. In MPI mode, user input and results are broadcast to all processes, and all ranks participate in the MPI benchmark. Results and performance analysis are printed only by rank 0.
+ */
 
 void runAllComparison(void) {
     // MPI info

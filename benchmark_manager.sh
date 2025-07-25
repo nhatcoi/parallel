@@ -14,6 +14,7 @@ RESET='\033[0m'
 
 BENCHMARK_DIR="benchmark"
 
+# show_help displays usage instructions and available command options for the benchmark manager script with colored formatting.
 show_help() {
     echo -e "${CYAN}🔧 BENCHMARK MANAGER - Công cụ quản lý kết quả benchmark${RESET}"
     echo -e "${CYAN}=================================================${RESET}"
@@ -28,6 +29,7 @@ show_help() {
     echo -e "  ${GREEN}help${RESET}     - Hiển thị hướng dẫn này"
 }
 
+# list_benchmarks lists all benchmark result files sorted by version in descending order, displaying each file's name, size, and last modification date. If no benchmark files are found, it prints a warning message.
 list_benchmarks() {
     echo -e "${CYAN}📁 Danh sách file benchmark:${RESET}"
     if [ ! -d "$BENCHMARK_DIR" ] || [ -z "$(ls -A $BENCHMARK_DIR 2>/dev/null)" ]; then
@@ -43,6 +45,7 @@ list_benchmarks() {
     done
 }
 
+# view_latest displays the contents of the most recent benchmark result file in the benchmark directory.
 view_latest() {
     echo -e "${CYAN}📄 File benchmark mới nhất:${RESET}"
     local latest_file=$(ls $BENCHMARK_DIR/ket_qua_benchmark-v*.txt 2>/dev/null | sort -V | tail -1)
@@ -57,6 +60,7 @@ view_latest() {
     cat "$latest_file"
 }
 
+# view_specific interactively lists available benchmark files and displays the contents of the file selected by the user. If the benchmark directory or files are missing, or if the user input is invalid, it prints an error message.
 view_specific() {
     echo -e "${CYAN}📄 Chọn file để xem:${RESET}"
     
@@ -90,6 +94,7 @@ view_specific() {
     fi
 }
 
+# clean_old deletes all but the 5 most recent benchmark files, keeping only the latest versions.
 clean_old() {
     echo -e "${CYAN}🧹 Dọn dẹp file cũ (giữ lại 5 file gần nhất):${RESET}"
     
@@ -112,6 +117,7 @@ clean_old() {
     echo -e "${GREEN}✅ Dọn dẹp hoàn thành!${RESET}"
 }
 
+# show_stats displays summary statistics about the benchmark directory, including total file count, total size, newest file, and oldest file.
 show_stats() {
     echo -e "${CYAN}📊 Thống kê benchmark:${RESET}"
     

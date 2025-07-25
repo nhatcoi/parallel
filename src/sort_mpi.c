@@ -74,7 +74,18 @@ void merge_two_arrays_mpi(int arr[], int left, int mid, int right, int ascending
 }
 
 /**
- * Trộn các chunk đã sắp xếp thu thập từ tất cả các tiến trình MPI
+ * Merges multiple sorted chunks from all MPI processes into a single sorted array in-place.
+ *
+ * Iteratively merges adjacent sorted chunks within the array using a binary merge approach,
+ * updating chunk boundaries after each merge. Includes safety checks for invalid indices and
+ * excessive iterations to prevent infinite loops. The merge order is determined by the
+ * `ascending` flag.
+ *
+ * @param arr The array containing sorted chunks to be merged.
+ * @param chunk_sizes Array specifying the size of each sorted chunk.
+ * @param num_procs Number of MPI processes (number of chunks).
+ * @param total_size Total number of elements in the array.
+ * @param ascending If nonzero, merges in ascending order; otherwise, descending.
  */
 void merge_mpi_chunks(int arr[], int* chunk_sizes, int num_procs, int total_size, int ascending) {
     if (num_procs <= 1) return;
@@ -142,7 +153,12 @@ void merge_mpi_chunks(int arr[], int* chunk_sizes, int num_procs, int total_size
 }
 
 /**
- * Hàm triển khai MPI cốt lõi
+ * Performs a parallel insertion sort on an integer array using MPI.
+ *
+ * The array is divided into balanced chunks, distributed to all MPI processes, locally sorted, and then merged into a fully sorted array on the root process. Falls back to sequential insertion sort for small arrays or single-process execution.
+ * @param a The array to be sorted. Only the root process's array is modified in-place.
+ * @param n The number of elements in the array.
+ * @param ascending Nonzero for ascending order, zero for descending order.
  */
 void parallelInsertionSortMPI(int a[], int n, int ascending) {
     int rank, size;
@@ -233,7 +249,8 @@ void parallelInsertionSortMPIDesc(int a[], int n) {
 }
 
 /**
- * Initialize MPI environment
+ * Initializes the MPI environment with single-thread support.
+ * @returns 0 on success, or -1 if MPI initialization fails.
  */
 int initializeMPI(int argc, char* argv[]) {
     int provided;
@@ -278,34 +295,54 @@ int isMPIInitialized(void) {
 
 #else // HAVE_MPI not defined
 
-// Stub implementations when MPI is not available
+/**
+ * Sorts the array in ascending order using sequential insertion sort when MPI is unavailable.
+ * Prints a warning indicating that MPI is not available and falls back to sequential sorting.
+ */
 void parallelInsertionSortMPIAsc(int a[], int n) {
     printf(RED "MPI không khả dụng - chuyển sang sắp xếp tuần tự\n" RESET);
     insertionSortAsc(a, n);
 }
 
+/**
+ * Sorts an array in descending order using sequential insertion sort if MPI is unavailable.
+ * Prints a warning message indicating that MPI is not enabled.
+ */
 void parallelInsertionSortMPIDesc(int a[], int n) {
     printf(RED "MPI không khả dụng - chuyển sang sắp xếp tuần tự\n" RESET);
     insertionSortDesc(a, n);
 }
 
-// Demonstration and benchmark stub functions moved to ogt_ui.c
+/**
+ * Stub for MPI initialization when MPI is not compiled.
+ * Always returns -1 to indicate MPI is unavailable.
+ */
 
 int initializeMPI(int argc, char* argv[]) {
     printf(RED "Khởi tạo MPI không khả dụng - MPI chưa được biên dịch\n" RESET);
     return -1;
 }
 
+/**
+ * Finalizes the MPI environment if available; otherwise, prints a warning that MPI is not compiled.
+ */
 void finalizeMPI(void) {
     printf(RED "Kết thúc MPI không khả dụng - MPI chưa được biên dịch\n" RESET);
 }
 
+/**
+ * Sets the MPI rank to 0 and size to 1, indicating that MPI is not available.
+ */
 void getMPIInfo(int* rank, int* size) {
     *rank = 0;
     *size = 1;
     printf(RED "Thông tin MPI không khả dụng - MPI chưa được biên dịch\n" RESET);
 }
 
+/**
+ * Indicates whether the MPI environment is initialized.
+ * @returns 0, as MPI is not available in this build.
+ */
 int isMPIInitialized(void) {
     return 0;
 }

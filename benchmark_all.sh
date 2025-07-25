@@ -64,7 +64,7 @@ if [ $? -ne 0 ]; then
 fi
 echo -e "${GREEN}✅ Xây dựng thành công!${RESET}"
 
-# Hàm trích xuất thời gian từ output
+# extract_time extracts the average execution time for a specified sorting method from the benchmark output.
 extract_time() {
     local method=$1
     local output=$2
@@ -82,7 +82,7 @@ extract_time() {
     echo "$output" | grep -A 5 "Phương Pháp.*Thời Gian TB" | grep -E "^\s*${local_method}\s*\|" | awk -F'|' '{print $2}' | awk '{print $1}'
 }
 
-# Hàm lấy kết quả từ mảng theo kích thước và số luồng
+# get_result retrieves the stored benchmark time for a given method, array size, and thread or process count, or echoes "N/A" if not found.
 get_result() {
     local array_name=$1
     local size=$2
@@ -118,7 +118,7 @@ get_result() {
     echo "N/A"
 }
 
-# Hàm chạy benchmark OpenMP
+# run_openmp_benchmark runs the OpenMP benchmark for a specified array size and thread count, extracts the average execution time, and stores the result for later analysis.
 run_openmp_benchmark() {
     local size=$1
     local threads=$2
@@ -139,7 +139,7 @@ run_openmp_benchmark() {
     fi
 }
 
-# Hàm chạy benchmark Pthreads  
+# run_pthread_benchmark runs the Pthreads benchmark for a specified array size and thread count, extracts the average execution time, and stores the result for later analysis.
 run_pthread_benchmark() {
     local size=$1
     local threads=$2
@@ -160,7 +160,7 @@ run_pthread_benchmark() {
     fi
 }
 
-# Hàm chạy benchmark MPI
+# run_mpi_benchmark runs the MPI benchmark for a specified array size and number of processes, extracts the average execution time, and stores the result.
 run_mpi_benchmark() {
     local size=$1
     local processes=$2

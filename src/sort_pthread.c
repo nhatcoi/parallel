@@ -130,7 +130,14 @@ void merge_sorted_chunks_pthread(int arr[], ChunkInfo chunks[], int num_threads,
 }
 
 /**
- * Hàm triển khai pthread cốt lõi
+ * Sorts an integer array in parallel using insertion sort and pthreads.
+ *
+ * Divides the array into chunks, sorts each chunk concurrently using multiple threads, and then merges the sorted chunks into a fully sorted array. Supports both ascending and descending order sorting.
+ *
+ * @param a The array to be sorted.
+ * @param n The number of elements in the array.
+ * @param num_threads The number of threads to use for parallel sorting.
+ * @param ascending If nonzero, sorts in ascending order; if zero, sorts in descending order.
  */
 void parallelInsertionSortPthreads(int a[], int n, int num_threads, int ascending) {
     if (n <= 1) return;
