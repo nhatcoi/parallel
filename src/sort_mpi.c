@@ -5,7 +5,11 @@
 #include <mpi.h>
 #include <sys/time.h>
 
-// Struct chứa thông tin chunk trong MPI
+// Định nghĩa cấu trúc để quản lý thông tin phân đoạn (chunk) trong MPI
+// start: vị trí bắt đầu của chunk
+// end: vị trí kết thúc của chunk
+// size: kích thước của chunk
+// rank: chỉ số của tiến trình
 typedef struct {
     int start;
     int end;
@@ -14,7 +18,12 @@ typedef struct {
 } MPIChunkInfo;
 
 /**
- * Trộn hai mảng đã sắp xếp (phiên bản MPI)
+ * Hàm trộn hai mảng con đã được sắp xếp thành một mảng đã sắp xếp
+ * @param arr: Mảng cần trộn
+ * @param left: Chỉ số bắt đầu của mảng con bên trái
+ * @param mid: Chỉ số giữa
+ * @param right: Chỉ số kết thúc của mảng con bên phải
+ * @param ascending: 1 nếu sắp xếp tăng dần, 0 nếu sắp xếp giảm dần
  */
 void merge_two_arrays_mpi(int arr[], int left, int mid, int right, int ascending) {
     int i, j, k;
@@ -74,7 +83,12 @@ void merge_two_arrays_mpi(int arr[], int left, int mid, int right, int ascending
 }
 
 /**
- * Trộn các chunk đã sắp xếp thu thập từ tất cả các tiến trình MPI
+ * Hàm trộn tất cả các phân đoạn đã sắp xếp từ các tiến trình MPI
+ * @param arr: Mảng chứa tất cả các phân đoạn
+ * @param chunk_sizes: Mảng chứa kích thước của từng phân đoạn
+ * @param num_procs: Số lượng tiến trình
+ * @param total_size: Tổng kích thước mảng
+ * @param ascending: 1 nếu sắp xếp tăng dần, 0 nếu sắp xếp giảm dần
  */
 void merge_mpi_chunks(int arr[], int* chunk_sizes, int num_procs, int total_size, int ascending) {
     if (num_procs <= 1) return;
@@ -142,7 +156,15 @@ void merge_mpi_chunks(int arr[], int* chunk_sizes, int num_procs, int total_size
 }
 
 /**
- * Hàm triển khai MPI cốt lõi
+ * Hàm sắp xếp chèn song song sử dụng MPI
+ * Triển khai thuật toán:
+ * 1. Phân chia dữ liệu cho các tiến trình
+ * 2. Mỗi tiến trình sắp xếp phần dữ liệu của mình
+ * 3. Trộn các phần đã sắp xếp lại với nhau
+ * 
+ * @param a: Mảng cần sắp xếp
+ * @param n: Kích thước mảng
+ * @param ascending: 1 nếu sắp xếp tăng dần, 0 nếu sắp xếp giảm dần
  */
 void parallelInsertionSortMPI(int a[], int n, int ascending) {
     int rank, size;
@@ -151,7 +173,8 @@ void parallelInsertionSortMPI(int a[], int n, int ascending) {
     
     if (n <= 1) return;
     
-    // Đối với mảng nhỏ hoặc tiến trình đơn, dùng sắp xếp tuần tự để tránh overhead MPI
+    // Sử dụng sắp xếp tuần tự cho mảng nhỏ hoặc khi chỉ có một tiến trình
+    // để tránh chi phí phụ trội của việc thiết lập MPI
     if (n < 1000 || size <= 1) {
         if (rank == 0) {
             if (ascending) {
@@ -163,17 +186,19 @@ void parallelInsertionSortMPI(int a[], int n, int ascending) {
         return;
     }
     
-    // Tính toán kích thước chunk với cân bằng tải
+    // Tính toán kích thước phân đoạn cho mỗi tiến trình để đảm bảo cân bằng tải
     int base_chunk_size = n / size;
     int remainder = n % size;
     
-    // Tính toán kích thước chunk cục bộ cho mỗi tiến trình
+    // Tính toán kích thước phân đoạn cục bộ cho từng tiến trình
+    // Các tiến trình đầu sẽ nhận thêm phần dư nếu có
     int local_chunk_size = base_chunk_size + (rank < remainder ? 1 : 0);
     
-    // Tính toán displacement cho scatterv
+    // Khởi tạo mảng để lưu thông tin về kích thước và vị trí của các phân đoạn
     int* send_counts = NULL;
     int* displacements = NULL;
     
+    // Chỉ tiến trình gốc (rank 0) cần cấp phát và tính toán thông tin phân phối
     if (rank == 0) {
         send_counts = (int*)malloc(size * sizeof(int));
         displacements = (int*)malloc(size * sizeof(int));
@@ -186,43 +211,46 @@ void parallelInsertionSortMPI(int a[], int n, int ascending) {
         }
     }
     
-    // Cấp phát mảng cục bộ
+    // Cấp phát bộ nhớ cho mảng cục bộ của mỗi tiến trình
     int* local_array = (int*)malloc(local_chunk_size * sizeof(int));
     if (local_array == NULL) {
         printf(RED "Lỗi: Thất bại cấp phát bộ nhớ cho mảng cục bộ tại rank %d\n" RESET, rank);
         MPI_Abort(MPI_COMM_WORLD, 1);
     }
     
-    // Phân tán dữ liệu đến tất cả các tiến trình
+    // Phân phối dữ liệu từ tiến trình gốc đến tất cả các tiến trình
+    // Sử dụng MPI_Scatterv để hỗ trợ phân phối không đều
     MPI_Scatterv(a, send_counts, displacements, MPI_INT, 
                  local_array, local_chunk_size, MPI_INT, 0, MPI_COMM_WORLD);
     
-    // Sắp xếp chunk cục bộ (không cần đồng bộ - công việc độc lập)
+    // Mỗi tiến trình độc lập sắp xếp phần dữ liệu của mình
+    // Không cần đồng bộ hóa trong giai đoạn này
     if (ascending) {
         insertionSortAsc(local_array, local_chunk_size);
     } else {
         insertionSortDesc(local_array, local_chunk_size);
     }
     
-    // Gather sorted chunks back to root
+    // Thu thập tất cả các phân đoạn đã sắp xếp về tiến trình gốc
     MPI_Gatherv(local_array, local_chunk_size, MPI_INT,
                 a, send_counts, displacements, MPI_INT, 0, MPI_COMM_WORLD);
     
-    // Merge sorted chunks on root process
+    // Tiến trình gốc trộn tất cả các phân đoạn đã sắp xếp
     if (rank == 0) {
         merge_mpi_chunks(a, send_counts, size, n, ascending);
         free(send_counts);
         free(displacements);
     }
     
-    // Final synchronization
+    // Đồng bộ hóa tất cả các tiến trình trước khi kết thúc
     MPI_Barrier(MPI_COMM_WORLD);
     
     free(local_array);
 }
 
 /**
- * Public API functions for MPI parallel insertion sort
+ * Các hàm API công khai cho thuật toán sắp xếp chèn song song MPI
+ * Cung cấp hai phiên bản: sắp xếp tăng dần và giảm dần
  */
 void parallelInsertionSortMPIAsc(int a[], int n) {
     parallelInsertionSortMPI(a, n, 1);
@@ -233,7 +261,10 @@ void parallelInsertionSortMPIDesc(int a[], int n) {
 }
 
 /**
- * Initialize MPI environment
+ * Khởi tạo môi trường MPI
+ * @param argc Con trỏ đến số lượng tham số dòng lệnh
+ * @param argv Con trỏ đến mảng các tham số dòng lệnh
+ * @return 0 nếu thành công, -1 nếu thất bại
  */
 int initializeMPI(int argc, char* argv[]) {
     int provided;
@@ -248,14 +279,17 @@ int initializeMPI(int argc, char* argv[]) {
 }
 
 /**
- * Finalize MPI environment
+ * Kết thúc môi trường MPI
+ * Giải phóng tài nguyên và đóng kết nối MPI
  */
 void finalizeMPI(void) {
     MPI_Finalize();
 }
 
 /**
- * Get MPI process information
+ * Lấy thông tin về tiến trình MPI hiện tại
+ * @param rank Con trỏ để lưu chỉ số của tiến trình hiện tại
+ * @param size Con trỏ để lưu tổng số tiến trình
  */
 void getMPIInfo(int* rank, int* size) {
     MPI_Comm_rank(MPI_COMM_WORLD, rank);
@@ -263,12 +297,8 @@ void getMPIInfo(int* rank, int* size) {
 }
 
 /**
- * Benchmark function for MPI implementation
- */
-// Benchmark and demonstration functions moved to ogt_ui.c to avoid duplication
-
-/**
- * Utility function to check if MPI is properly initialized
+ * Kiểm tra trạng thái khởi tạo của MPI
+ * @return 1 nếu MPI đã được khởi tạo, 0 nếu chưa
  */
 int isMPIInitialized(void) {
     int initialized;
