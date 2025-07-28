@@ -72,3 +72,6 @@ benchmark/           # Benchmark results
 - ✅ **Linux**: Full support (GCC + OpenMP + MPI)
 - ✅ **macOS**: Homebrew OpenMP required (`brew install libomp open-mpi`)
 - ✅ **Windows**: MinGW/MSVC support
+
+
+https://github.com/nhatcoi/parallel
