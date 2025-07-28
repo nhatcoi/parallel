@@ -12,7 +12,7 @@ int main(int argc, char* argv[]) {
     }
 #endif
 
-    // Chạy trình test chính
+    // Chạy trình UI test chính
     overallTestOGT();
 
     // Đóng MPI nếu đã khởi tạo
